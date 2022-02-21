@@ -1,0 +1,34 @@
+@import "./styles/variables";
+@import "./styles/colors";
+
+main {
+  h2 {
+    text-align: center;
+  }
+  .month-wrapper,
+  .card-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  .form-select {
+    @include media-breakpoint-down(md) {
+      margin-bottom: 0.25rem !important;
+    }
+  }
+}
+
+body > .container {
+  padding-top: 60px;
+}
+
+footer {
+  background-color: $cerulean-crayola;
+  padding: 1rem;
+  color: $white;
+  text-align: center;
+  border-top: 1px solid $dark-cornflower-blue;
+  a {
+    color: $black;
+  }
+}

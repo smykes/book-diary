@@ -1,0 +1,11 @@
+@import "../../styles/colors";
+
+.navBackground {
+  border-bottom: 1px solid $dark-cornflower-blue;
+  background-color: $cerulean-crayola;
+  color: $white;
+  font-weight: 400;
+  a {
+    color: $white;
+  }
+}
