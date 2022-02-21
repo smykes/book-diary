@@ -1,7 +1,8 @@
 {
-  "name": "book-report-test",
-  "version": "0.1.0",
+  "name": "book-diary",
+  "version": "1.0.0",
   "private": true,
+  "homepage": "/book-diary",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -57,6 +58,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "mini-css-extract-plugin": "2.4.5",
     "prettier": "^2.5.1",
     "sass": "^1.48.0"
   }
