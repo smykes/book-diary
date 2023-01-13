@@ -100,6 +100,7 @@ describe("helper functions", () => {
     //     "12345 Books for 4004"
     //   );
     // });
+
     // test("When month is 5 and year is 2020 with a modifier of abcdef the string of 12345 May, 4004.", () => {
     //   expect(getMonthYearLabel("12345", 5, 4004)).toEqual("12345 May, 4004.");
     // });

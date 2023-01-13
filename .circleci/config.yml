@@ -26,6 +26,6 @@ workflows:
           post-steps:
             - run: npm run build
             - aws-s3/copy:
-                from: dist/
-                to: s3://sample-app-vue
+                from: build/
+                to: s3://secondrunnerup.com/book-diary/
                 arguments: --recursive
