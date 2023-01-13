@@ -22,14 +22,7 @@ interface BookType {
   Spoiler: string;
   "Private Notes": string;
   "Read Count": number;
-  "Recommended For": string;
-  "Recommended By": string;
   "Owned Copies": number;
-  "Original Purchase Date": string;
-  "Original Purchase Location": string;
-  Condition: string;
-  "Condition Description": string;
-  BCID: string;
 }
 
 interface MonthObject {
