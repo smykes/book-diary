@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import BookComponent from "./components/BookComponent/BookComponent";
 import NavigationComponent from "./components/NavigationComponent/NavigationComponent";
 import StatisticsComponent from "./components/StatisticsComponent/StatisticsComponent";
-import BookData from "./data/books-new.json";
+import BookData from "./data/books.json";
 import { MONTH_DATA, BOOK_RATINGS } from "./constants";
 import { BookType, MonthObject } from "./types/index";
 import {
