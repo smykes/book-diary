@@ -1,6 +1,6 @@
 {
   "name": "book-diary",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "homepage": "/book-diary",
   "engines": {
@@ -19,7 +19,10 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest --mode test",
+    "test:watch": "vitest --watch --mode test",
+    "test:coverage": "vitest --coverage --mode test"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -34,6 +37,7 @@
     "mini-css-extract-plugin": "2.4.5",
     "sass": "^1.48.0",
     "typescript": "^5.2.2",
-    "vite": "^5.2.6"
+    "vite": "^5.2.6",
+    "vitest": "^1.4.0"
   }
 }
