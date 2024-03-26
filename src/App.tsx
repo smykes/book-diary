@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import BookComponent from "./components/BookComponent/BookComponent";
 import NavigationComponent from "./components/NavigationComponent/NavigationComponent";
 import StatisticsComponent from "./components/StatisticsComponent/StatisticsComponent";
-import BookData from "./data/books.json";
+import BookData from "./data/books-new.json";
 import { MONTH_DATA, BOOK_RATINGS } from "./constants";
 import { BookType, MonthObject } from "./types/index";
 import {
@@ -15,7 +15,7 @@ import {
   getComponentPhraseForPages,
 } from "./utils/functions/helpers";
 
-import "./App.scss";
+import "./styles/styles.scss";
 
 function App() {
   const [activeYears, setActiveYears] = useState<number[] | undefined>();
@@ -343,7 +343,7 @@ function App() {
       <footer className="fixed-bottom">
         <div className="container">
           🖤 Made with spite in Chicago, IL by{" "}
-          <a href="https://twitter.com/smykes" target="blank">
+          <a href="https://github.com/smykes" target="blank">
             @smykes
           </a>{" "}
           sometime in the 21st century.🖤
