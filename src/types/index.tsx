@@ -38,6 +38,8 @@ interface Book {
   numberOfPages: number;
   rating: number;
   averageRating: number;
+  isbn: string;
+  bookId: number;
 }
 
 interface StatsType {

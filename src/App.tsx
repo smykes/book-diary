@@ -16,6 +16,8 @@ import {
 } from "./utils/functions/helpers";
 
 import "./styles/styles.scss";
+import FooterComponent from "./components/FooterComponent/FooterComponent";
+import NoResultsCommponent from "./components/NoResultsComponent/NoResultsComponent";
 
 function App() {
   const [activeYears, setActiveYears] = useState<number[] | undefined>();
@@ -46,7 +48,6 @@ function App() {
     console.log("Currently Selected Month: ", selectedMonth);
     console.log("Currently Selected Yea: ", selectedYear);
     console.log("Currently Selected Rating: ", selectedRating);
-
     console.groupEnd();
 
     /* 
@@ -207,6 +208,8 @@ function App() {
         numberOfPages={book["Number of Pages"]}
         rating={book["My Rating"]}
         averageRating={book["Average Rating"]}
+        isbn={book["ISBN"]}
+        bookId={book["Book Id"]}
       />
     );
   });
@@ -329,26 +332,11 @@ function App() {
         {/* Book List */}
 
         <div className="container">
-          {currentData && bookComponent}123
-          {currentData?.length === 0 && (
-            <div className="alert alert-warning" role="alert">
-              Either I was a slacker this month and didn't finish any books,
-              this was a date prior to when I bought a Kindle, or it's a date in
-              the future. Or the filters you have chosen don't match anything.
-              Spooky.
-            </div>
-          )}
+          {currentData && bookComponent}
+          {currentData?.length === 0 && <NoResultsCommponent />}
         </div>
       </main>
-      <footer className="fixed-bottom">
-        <div className="container">
-          🖤 Made with spite in Chicago, IL by{" "}
-          <a href="https://github.com/smykes" target="blank">
-            @smykes
-          </a>{" "}
-          sometime in the 21st century.🖤
-        </div>
-      </footer>
+      <FooterComponent />
     </div>
   );
 }
