@@ -1,6 +1,6 @@
 const FooterComponent = () => {
   return (
-    <footer className="fixed-bottom">
+    <footer>
       <div className="container">
         🖤 Made with spite in Chicago, IL by{" "}
         <a href="https://github.com/smykes" target="blank">

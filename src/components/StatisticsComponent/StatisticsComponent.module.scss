@@ -18,7 +18,7 @@
 }
 
 .card-style {
-  border: 2px solid $orange-pantone;
+  border: 2px solid $border-orange;
 
   @include media-breakpoint-down(md) {
     margin-bottom: 0.25rem !important;
