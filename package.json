@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "homepage": "/book-diary",
+  "type": "module",
   "engines": {
     "node": ">=18 <22"
   },
