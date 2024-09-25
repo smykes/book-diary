@@ -1,11 +1,11 @@
 {
   "name": "book-diary",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "homepage": "/book-diary",
   "type": "module",
   "engines": {
-    "node": ">=18 <22"
+    "node": ">=22"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.2.1",
@@ -13,7 +13,7 @@
     "classnames": "^2.5.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "uuid": "^9.0.1",
+    "uuid": "^10.0.0",
     "vite-tsconfig-paths": "^4.3.2",
     "web-vitals": "^2.1.4"
   },
@@ -33,7 +33,7 @@
     "@types/node": "^20.11.27",
     "@types/react": "^18.2.71",
     "@types/react-dom": "^18.2.22",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "jsdom": "^23.0.1",
     "mini-css-extract-plugin": "2.4.5",
     "sass": "^1.48.0",
