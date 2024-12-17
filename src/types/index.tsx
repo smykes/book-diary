@@ -2,27 +2,27 @@ interface BookType {
   "Book Id": number;
   Title: any;
   Author: string;
-  "Author l-f": string;
-  "Additional Authors": string;
+  "Author l-f": string | null;
+  "Additional Authors": string | null;
   ISBN: string;
   ISBN13: string | null;
   "My Rating": number;
   "Average Rating": number;
-  Publisher: string;
-  Binding: string;
+  Publisher: string | null;
+  Binding: string | null;
   "Number of Pages": number;
-  "Year Published": number | string;
-  "Original Publication Year": number | string;
+  "Year Published": number | string | null;
+  "Original Publication Year": number | string | null;
   "Date Read": string;
   "Date Added": string;
-  Bookshelves: string;
-  "Bookshelves with positions": string;
-  "Exclusive Shelf": string;
-  "My Review": string;
-  Spoiler: string;
-  "Private Notes": string;
-  "Read Count": number;
-  "Owned Copies": number;
+  Bookshelves: string | null;
+  "Bookshelves with positions": string | null;
+  "Exclusive Shelf": string | null;
+  "My Review": string | null;
+  Spoiler: string | null;
+  "Private Notes": string | null;
+  "Read Count": number | null;
+  "Owned Copies": number | null;
 }
 
 interface MonthObject {

@@ -9,7 +9,11 @@ const filterBooksByRead = (BookData: BookType[]): BookType[] => {
   */
   console.log("fn filteredBooksByRead");
   const readBooks = BookData.filter((book) => {
-    return book["Exclusive Shelf"] === "read" && book["Date Read"] !== "";
+    return (
+      book["Exclusive Shelf"] === "read" &&
+      book["Date Read"] !== "" &&
+      book["Date Read"] !== null
+    );
   });
 
   return readBooks;
