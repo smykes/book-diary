@@ -2,15 +2,10 @@ import React, { useEffect, useState, useMemo } from "react";
 import BookComponent from "./components/BookComponent/BookComponent";
 import NavigationComponent from "./components/NavigationComponent/NavigationComponent";
 import StatisticsComponent from "./components/StatisticsComponent/StatisticsComponent";
-import BookData from "./data/books.json";
 import { MONTH_DATA, BOOK_RATINGS } from "./constants";
 import { BookType, MonthObject } from "./types/index";
 import {
-  filterBooksByRead,
-  getYearsByBookData,
-  filterReadBooksByMonthAndYear,
   getPageCounts,
-  filterReadBooksByUserRating,
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
 } from "./utils/functions/helpers";
@@ -37,145 +32,95 @@ function App() {
   const [selectedSortOrder, setSelectedOrder] = useState<number>(0);
   const [currentData, setCurrentData] = useState<BookType[] | undefined>();
   const [pagesRead, setPagesRead] = useState<number | undefined>();
-  const booksRead = useMemo(() => filterBooksByRead(BookData), []);
+  const getURL = (
+    month: number | undefined,
+    year: number | undefined,
+    rating: number | undefined,
+    sort: number | undefined
+  ): string => {
+    let baseUrl = "http://127.0.0.1:3000/api/books";
+    if (!year && !month && !rating && !sort) return baseUrl;
+    const sortIt = sort === undefined || sort === 0 ? "asc" : "desc";
+    const varArray = [month, year, rating, sortIt];
+    const wordArray = ["month", "year", "rating", "sort"];
+    let hasFirst = false;
+    let urlString;
+    for (let i = 0; i < 4; i += 1) {
+      if (varArray[i]) {
+        if (!hasFirst) {
+          urlString = `?${wordArray[i]}=${varArray[i]}`;
+          hasFirst = true;
+        } else {
+          urlString = `${urlString}&${wordArray[i]}=${varArray[i]}`;
+        }
+      }
+    }
+    return `${baseUrl}${urlString}`;
+  };
+  const getAllBooks = async (
+    month: number | undefined,
+    year: number | undefined,
+    rating: number | undefined,
+    sort: number | undefined
+  ) => {
+    const url = getURL(month, year, rating, sort);
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+      const json = await response.json();
+      console.log(json);
+      return json;
+    } catch (error) {
+      const e = error as Error;
+      console.error(e.message);
+    }
+  };
+  const getAllYears = async () => {
+    const url = "http://127.0.0.1:3000/api/years";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+      const json = await response.json();
+      console.log(json);
+      return json;
+    } catch (error) {
+      const e = error as Error;
+      console.error(e.message);
+    }
+  };
 
   useEffect(() => {
     console.log("useEffect");
-    const readBooks = booksRead;
-    const historicallyActiveYears = getYearsByBookData(readBooks);
-    setActiveYears(historicallyActiveYears);
-    console.group("Dates:");
-    console.log("Currently Selected Month: ", selectedMonth);
-    console.log("Currently Selected Yea: ", selectedYear);
-    console.log("Currently Selected Rating: ", selectedRating);
-    console.groupEnd();
 
-    /* 
-      If the selected year is undefined && the selectedmonth
-      is undefined set the current data to the books that have
-      been read.
-    */
-    if (!selectedYear && !selectedMonth) {
-      if (selectedSortOrder === 0) {
-        readBooks.sort(function (a, b) {
-          return (
-            new Date(a["Date Read"]).valueOf() -
-            new Date(b["Date Read"]).valueOf()
-          );
-        });
-      } else {
-        readBooks.sort(function (a, b) {
-          return (
-            new Date(b["Date Read"]).valueOf() -
-            new Date(a["Date Read"]).valueOf()
-          );
-        });
+    const getBooks = async () => {
+      console.log("getBooks");
+      if (!activeYears) {
+        const historicallyActiveYears = await getAllYears();
+        setActiveYears(historicallyActiveYears);
       }
-      const ratingsFilteredBooks =
-        selectedRating !== undefined
-          ? filterReadBooksByUserRating(readBooks, selectedRating)
-          : readBooks;
-      setCurrentData(ratingsFilteredBooks);
-      setPagesRead(getPageCounts(ratingsFilteredBooks));
-    }
-    if (selectedYear && !selectedMonth) {
-      const finishedBooks = filterReadBooksByMonthAndYear(
-        readBooks,
-        null,
-        selectedYear
-      );
-      if (selectedSortOrder === 0) {
-        finishedBooks.sort(function (a, b) {
-          return (
-            new Date(a["Date Read"]).valueOf() -
-            new Date(b["Date Read"]).valueOf()
-          );
-        });
-      } else {
-        finishedBooks.sort(function (a, b) {
-          return (
-            new Date(b["Date Read"]).valueOf() -
-            new Date(a["Date Read"]).valueOf()
-          );
-        });
-      }
-      const ratingsFilteredBooks =
-        selectedRating !== undefined
-          ? filterReadBooksByUserRating(finishedBooks, selectedRating)
-          : finishedBooks;
-      setCurrentData(ratingsFilteredBooks);
-      setPagesRead(getPageCounts(ratingsFilteredBooks));
-    }
-    if (!selectedYear && selectedMonth) {
-      const finishedBooks = filterReadBooksByMonthAndYear(
-        readBooks,
+      const books = await getAllBooks(
         selectedMonth,
-        null
+        selectedYear,
+        selectedRating,
+        selectedSortOrder
       );
-      if (selectedSortOrder === 0) {
-        finishedBooks.sort(function (a, b) {
-          return (
-            new Date(a["Date Read"]).valueOf() -
-            new Date(b["Date Read"]).valueOf()
-          );
-        });
-      } else {
-        finishedBooks.sort(function (a, b) {
-          return (
-            new Date(b["Date Read"]).valueOf() -
-            new Date(a["Date Read"]).valueOf()
-          );
-        });
-      }
+      console.log(books);
+      setCurrentData(books.books);
+      setPagesRead(books.numberOfPages);
+    };
 
-      const ratingsFilteredBooks =
-        selectedRating !== undefined
-          ? filterReadBooksByUserRating(finishedBooks, selectedRating)
-          : finishedBooks;
+    getBooks();
+  }, [selectedMonth, selectedYear, selectedRating, selectedSortOrder]);
 
-      setCurrentData(ratingsFilteredBooks);
-      setPagesRead(getPageCounts(ratingsFilteredBooks));
-    }
-    if (selectedYear && selectedMonth) {
-      const finishedBooks = filterReadBooksByMonthAndYear(
-        readBooks,
-        selectedMonth,
-        selectedYear
-      );
-      if (selectedSortOrder === 0) {
-        finishedBooks.sort(function (a, b) {
-          return (
-            new Date(a["Date Read"]).valueOf() -
-            new Date(b["Date Read"]).valueOf()
-          );
-        });
-      } else {
-        finishedBooks.sort(function (a, b) {
-          return (
-            new Date(b["Date Read"]).valueOf() -
-            new Date(a["Date Read"]).valueOf()
-          );
-        });
-      }
-      const ratingsFilteredBooks =
-        selectedRating !== undefined
-          ? filterReadBooksByUserRating(finishedBooks, selectedRating)
-          : finishedBooks;
-      setCurrentData(ratingsFilteredBooks);
-      setPagesRead(getPageCounts(ratingsFilteredBooks));
-    }
-  }, [
-    selectedMonth,
-    selectedYear,
-    booksRead,
-    selectedRating,
-    selectedSortOrder,
-  ]);
-
-  const optionYears = activeYears?.map((year: number) => {
+  const optionYears = activeYears?.map((year: any) => {
     return (
-      <option key={year} value={year}>
-        {year}
+      <option key={year.year_read} value={year.year_read}>
+        {year.year_read}
       </option>
     );
   });
@@ -201,15 +146,15 @@ function App() {
   const bookComponent = currentData?.map((book: BookType) => {
     return (
       <BookComponent
-        key={book["Book Id"]}
-        title={book.Title}
-        author={book.Author}
-        finishedDate={book["Date Read"]}
-        numberOfPages={book["Number of Pages"]}
-        rating={book["My Rating"]}
-        averageRating={book["Average Rating"]}
-        isbn={book["ISBN"]}
-        bookId={book["Book Id"]}
+        key={book.id}
+        title={book.title}
+        author={book.author}
+        dateRead={book.date_read}
+        numberOfPages={book.number_of_pages}
+        rating={book.user_rating}
+        averageRating={book.avg_rating}
+        isbn={book.isbn}
+        bookId={book.book_id}
       />
     );
   });

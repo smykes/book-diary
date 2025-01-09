@@ -1,102 +1,20 @@
 import { BookType } from "../../types/index";
 import { MONTH_DATA } from "../../constants";
-const filterBooksByRead = (BookData: BookType[]): BookType[] => {
-  /*
-    The issue here is that not all read books have a date read.
-    Some books were imported manually. We are only going to use the
-    read books with the Date Read field populated. These are most likely
-    books read on a kindle since it integrates with Goodreads.
-  */
-  console.log("fn filteredBooksByRead");
-  const readBooks = BookData.filter((book) => {
-    return (
-      book["Exclusive Shelf"] === "read" &&
-      book["Date Read"] !== "" &&
-      book["Date Read"] !== null
-    );
-  });
 
-  return readBooks;
-};
-
-const filterReadBooksByMonthAndYear = (
-  BookData: BookType[],
-  month: number | null,
-  year: number | null
-): BookType[] => {
-  const bookReturn: BookType[] = [];
-  BookData.forEach((book) => {
-    // Turn the book date read into a javascript date we can work with.
-    // Date example: Sat Jul 30 2016 00:00:00 GMT-0500 (CDT)
-
-    // Since month is zero indexed in the return from getMonth we were
-    // trying to compare it to a 0 indexed month. Since 0 was evaluating
-    // as false, it was never hitting the correct evaluation. That's why
-    // once inside of the if we have to subtract one from the month.
-
-    const bookReadDate = new Date(book["Date Read"]);
-    if (month && year) {
-      if (
-        bookReadDate.getFullYear() === year &&
-        bookReadDate.getMonth() === month - 1
-      ) {
-        bookReturn.push(book);
-      }
-    }
-    if (month && !year) {
-      if (bookReadDate.getMonth() === month - 1) {
-        bookReturn.push(book);
-      }
-    }
-    if (!month && year) {
-      if (bookReadDate.getFullYear() === year) {
-        bookReturn.push(book);
-      }
-    }
-  });
-  return bookReturn;
-};
-
-const filterReadBooksByUserRating = (
-  BookData: BookType[],
-  rating: number | null
-): BookType[] => {
-  const bookReturn: BookType[] = [];
-  if (rating === undefined) {
-    return BookData;
+const formatDate = (dateRead: string | null): string => {
+  if (dateRead) {
+    const d = new Date(dateRead);
+    return `${getMonthName(
+      d.getMonth() + 1
+    )} ${d.getDate()}, ${d.getFullYear()}`;
   }
-  BookData.forEach((book) => {
-    if (book["Date Read"] !== "") {
-      if (book["My Rating"] === rating) {
-        bookReturn.push(book);
-      }
-    }
-  });
-  return bookReturn;
+  return "No Date Recorded";
 };
-
-// Returns the years that there are dates for.
-// IE if there were books read in 2016, return that
-// date. Allows us to show the correct number of years
-// based off of data instead of hard coding.
-const getYearsByBookData = (BookData: BookType[]): number[] => {
-  const yearsRead: number[] = [];
-  BookData.forEach((book) => {
-    if (book["Date Read"] !== "") {
-      const bookReadYear = new Date(book["Date Read"]).getFullYear();
-      if (yearsRead.indexOf(bookReadYear) === -1) {
-        yearsRead.push(bookReadYear);
-      }
-    }
-  });
-  return yearsRead.sort();
-};
-
 const getPageCounts = (BookData: BookType[]): number => {
   let count = 0;
   BookData.forEach((book) => {
-    if (book["Number of Pages"]) {
-      count += book["Number of Pages"];
+    if (book.number_of_pages) {
+      count += book.number_of_pages;
     }
   });
 
@@ -289,14 +207,11 @@ const getComponentPhraseForPages = (
 };
 
 export {
-  filterBooksByRead,
-  filterReadBooksByMonthAndYear,
-  filterReadBooksByUserRating,
-  getYearsByBookData,
   getPageCounts,
   getIsLeapYear,
   getMonthYearLabel,
   getMonthName,
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
+  formatDate,
 };
