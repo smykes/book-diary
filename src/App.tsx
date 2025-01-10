@@ -38,7 +38,7 @@ function App() {
     rating: number | undefined,
     sort: number | undefined
   ): string => {
-    let baseUrl = "http://127.0.0.1:3000/api/books";
+    let baseUrl = "https://book-diary-be-5559a3d95a3f.herokuapp.com/api/books";
     if (!year && !month && !rating && !sort) return baseUrl;
     const sortIt = sort === undefined || sort === 0 ? "asc" : "desc";
     const varArray = [month, year, rating, sortIt];
@@ -79,7 +79,7 @@ function App() {
     }
   };
   const getAllYears = async () => {
-    const url = "http://127.0.0.1:3000/api/years";
+    const url = "https://book-diary-be-5559a3d95a3f.herokuapp.com/api/years";
     try {
       const response = await fetch(url);
       if (!response.ok) {
