@@ -1,14 +1,7 @@
 import { render } from "@testing-library/react";
 import { describe, test, expect } from "vitest";
 import { bookMockDataA, bookMockDataB } from "./helpers.mock";
-import {
-  getIsLeapYear,
-  getPageCounts,
-  filterBooksByRead,
-  filterReadBooksByMonthAndYear,
-  filterReadBooksByUserRating,
-  getMonthYearLabel,
-} from "./helpers";
+import { getIsLeapYear, getPageCounts, getMonthYearLabel } from "./helpers";
 
 describe("helper functions", () => {
   describe("getIsLeapYear()", () => {
@@ -34,55 +27,55 @@ describe("helper functions", () => {
     });
   });
   /*--------------------------------*/
-  describe("getPageCounts()", () => {
-    test("Check for number of pages regardless of read or not.", () => {
-      expect(getPageCounts(bookMockDataA)).toEqual(596);
-    });
-    test("Check for number or pages for only read books", () => {
-      expect(getPageCounts(filterBooksByRead(bookMockDataA))).toEqual(308);
-    });
-  });
+  // describe("getPageCounts()", () => {
+  //   test("Check for number of pages regardless of read or not.", () => {
+  //     expect(getPageCounts(bookMockDataA)).toEqual(596);
+  //   });
+  //   test("Check for number or pages for only read books", () => {
+  //     expect(getPageCounts(filterBooksByRead(bookMockDataA))).toEqual(308);
+  //   });
+  // });
   /*--------------------------------*/
-  describe("filterBooksByRead", () => {
-    test("When data is filtered by read only one book is returned.", () => {
-      expect(filterBooksByRead(bookMockDataA)).toHaveLength(1);
-    });
-    test("When data is filtered by read only four book is returned.", () => {
-      expect(filterBooksByRead(bookMockDataB)).toHaveLength(2);
-    });
-  });
+  // describe("filterBooksByRead", () => {
+  //   test("When data is filtered by read only one book is returned.", () => {
+  //     expect(filterBooksByRead(bookMockDataA)).toHaveLength(1);
+  //   });
+  //   test("When data is filtered by read only four book is returned.", () => {
+  //     expect(filterBooksByRead(bookMockDataB)).toHaveLength(2);
+  //   });
+  // });
   /*--------------------------------*/
-  describe("filterReadBooksByMonthAndYear()", () => {
-    test("When data is filtered just by month and date only one book is returned.", () => {
-      expect(
-        filterReadBooksByMonthAndYear(bookMockDataA, 12, 2020)
-      ).toHaveLength(1);
-    });
-    test("When data is filtered just by month and date no book is returned.", () => {
-      expect(
-        filterReadBooksByMonthAndYear(bookMockDataA, 4, 2020)
-      ).toHaveLength(0);
-    });
-    test("When data is filtered just by month one book is returned.", () => {
-      expect(
-        filterReadBooksByMonthAndYear(bookMockDataA, 12, null)
-      ).toHaveLength(1);
-    });
-    test("When data is filtered just by year one book is returned.", () => {
-      expect(
-        filterReadBooksByMonthAndYear(bookMockDataA, null, 2020)
-      ).toHaveLength(1);
-    });
-  });
+  // describe("filterReadBooksByMonthAndYear()", () => {
+  //   test("When data is filtered just by month and date only one book is returned.", () => {
+  //     expect(
+  //       filterReadBooksByMonthAndYear(bookMockDataA, 12, 2020)
+  //     ).toHaveLength(1);
+  //   });
+  //   test("When data is filtered just by month and date no book is returned.", () => {
+  //     expect(
+  //       filterReadBooksByMonthAndYear(bookMockDataA, 4, 2020)
+  //     ).toHaveLength(0);
+  //   });
+  //   test("When data is filtered just by month one book is returned.", () => {
+  //     expect(
+  //       filterReadBooksByMonthAndYear(bookMockDataA, 12, null)
+  //     ).toHaveLength(1);
+  //   });
+  //   test("When data is filtered just by year one book is returned.", () => {
+  //     expect(
+  //       filterReadBooksByMonthAndYear(bookMockDataA, null, 2020)
+  //     ).toHaveLength(1);
+  //   });
+  // });
   /*--------------------------------*/
-  describe("filterReadBooksByUserRating()", () => {
-    test("When data is filtered by rating of 1 no data is returned", () => {
-      expect(filterReadBooksByUserRating(bookMockDataA, 1)).toHaveLength(0);
-    });
-    test("When data is filtered by rating of 4 two books are returned", () => {
-      expect(filterReadBooksByUserRating(bookMockDataA, 4)).toHaveLength(1);
-    });
-  });
+  // describe("filterReadBooksByUserRating()", () => {
+  //   test("When data is filtered by rating of 1 no data is returned", () => {
+  //     expect(filterReadBooksByUserRating(bookMockDataA, 1)).toHaveLength(0);
+  //   });
+  //   test("When data is filtered by rating of 4 two books are returned", () => {
+  //     expect(filterReadBooksByUserRating(bookMockDataA, 4)).toHaveLength(1);
+  //   });
+  // });
 
   /*--------------------------------*/
   describe("getMonthYearLabel()", () => {

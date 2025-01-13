@@ -3,12 +3,12 @@ import { BookTitle } from "./BookTitleComponent";
 import { Book } from "../../types";
 import classNames from "classnames";
 import bookComponentStyles from "./BookComponent.module.scss";
-
+import { formatDate } from "../../utils/functions/helpers";
 const BookComponent: React.FC<Book> = (props) => {
   const {
     title,
     author,
-    finishedDate,
+    dateRead,
     numberOfPages,
     rating,
     averageRating,
@@ -26,7 +26,7 @@ const BookComponent: React.FC<Book> = (props) => {
       </div>
       <div className={bookComponentStyles["info-wrapper"]}>
         <div>Author: {author}</div>
-        <div>Finished On: {finishedDate}</div>
+        <div>Finished On: {formatDate(dateRead)}</div>
         <div>Page Count: {numberOfPages}</div>
         <div>My Rating: {rating}</div>
         <div>Goodreads Rating: {averageRating.toPrecision(3)}</div>
