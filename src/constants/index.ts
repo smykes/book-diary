@@ -62,5 +62,7 @@ const MONTH_DATA = [
 ];
 
 const BOOK_RATINGS = [1, 2, 3, 4, 5];
-
-export { MONTH_DATA, BOOK_RATINGS };
+const ENDPOINT = {
+  BACKEND_API: import.meta.env.VITE_APP_BACKEND_API,
+};
+export { MONTH_DATA, BOOK_RATINGS, ENDPOINT };

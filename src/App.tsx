@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import BookComponent from "./components/BookComponent/BookComponent";
 import NavigationComponent from "./components/NavigationComponent/NavigationComponent";
 import StatisticsComponent from "./components/StatisticsComponent/StatisticsComponent";
-import { MONTH_DATA, BOOK_RATINGS } from "./constants";
+import { MONTH_DATA, BOOK_RATINGS, ENDPOINT } from "./constants";
 import { BookType, MonthObject } from "./types/index";
 import {
   getPageCounts,
@@ -13,6 +13,7 @@ import {
 import "./styles/styles.scss";
 import FooterComponent from "./components/FooterComponent/FooterComponent";
 import NoResultsCommponent from "./components/NoResultsComponent/NoResultsComponent";
+const apiUrl = ENDPOINT.BACKEND_API;
 
 function App() {
   const [activeYears, setActiveYears] = useState<number[] | undefined>();
@@ -38,7 +39,8 @@ function App() {
     rating: number | undefined,
     sort: number | undefined
   ): string => {
-    let baseUrl = "https://book-diary-be-5559a3d95a3f.herokuapp.com/api/books";
+    let baseUrl = `${apiUrl}/books`;
+    console.info(`gerURL Base URL ${baseUrl}`);
     if (!year && !month && !rating && !sort) return baseUrl;
     const sortIt = sort === undefined || sort === 0 ? "asc" : "desc";
     const varArray = [month, year, rating, sortIt];
@@ -55,6 +57,7 @@ function App() {
         }
       }
     }
+    console.log(`${baseUrl}/books${urlString}`);
     return `${baseUrl}${urlString}`;
   };
   const getAllBooks = async (
@@ -63,7 +66,10 @@ function App() {
     rating: number | undefined,
     sort: number | undefined
   ) => {
+    console.info(`getAllBoks Base URL ${apiUrl}`);
+
     const url = getURL(month, year, rating, sort);
+    console.info(`getAllBoks Calculated URL ${url}`);
 
     try {
       const response = await fetch(url);
@@ -79,7 +85,7 @@ function App() {
     }
   };
   const getAllYears = async () => {
-    const url = "https://book-diary-be-5559a3d95a3f.herokuapp.com/api/years";
+    const url = `${apiUrl}/years`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
