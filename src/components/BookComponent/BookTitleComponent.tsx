@@ -4,8 +4,6 @@ function getParsedISBN(
   isbn: string | undefined,
   bookId: number
 ): string | undefined {
-  console.log(bookId);
-  console.log("-------");
   return isbn?.split('"').pop();
   // const match = isbn.match(/=\\"(\d{10})/g);
   // if (match) {
@@ -23,7 +21,6 @@ interface BookTitleText {
 
 export const BookTitle: React.FC<BookTitleText> = (props) => {
   const { isbn, title, bookId } = props;
-  console.log(bookId);
   const parsedISBN = getParsedISBN(isbn, bookId);
   return (
     <>
