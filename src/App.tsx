@@ -30,6 +30,8 @@ function App() {
     undefined
   );
 
+  const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
+
   const [selectedSortOrder, setSelectedOrder] = useState<number>(0);
   const [currentData, setCurrentData] = useState<BookType[] | undefined>();
   const [pagesRead, setPagesRead] = useState<number | undefined>();
@@ -37,17 +39,18 @@ function App() {
     month: number | undefined,
     year: number | undefined,
     rating: number | undefined,
-    sort: number | undefined
+    sort: number | undefined,
+    term: string | undefined
   ): string => {
     let baseUrl = `${apiUrl}/books`;
     console.info(`gerURL Base URL ${baseUrl}`);
-    if (!year && !month && !rating && !sort) return baseUrl;
+    if (!year && !month && !rating && !sort && !term) return baseUrl;
     const sortIt = sort === undefined || sort === 0 ? "asc" : "desc";
-    const varArray = [month, year, rating, sortIt];
-    const wordArray = ["month", "year", "rating", "sort"];
+    const varArray = [month, year, rating, sortIt, term];
+    const wordArray = ["month", "year", "rating", "sort", "term"];
     let hasFirst = false;
     let urlString;
-    for (let i = 0; i < 4; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
       if (varArray[i]) {
         if (!hasFirst) {
           urlString = `?${wordArray[i]}=${varArray[i]}`;
@@ -57,27 +60,22 @@ function App() {
         }
       }
     }
-    console.log(`${baseUrl}/books${urlString}`);
     return `${baseUrl}${urlString}`;
   };
   const getAllBooks = async (
     month: number | undefined,
     year: number | undefined,
     rating: number | undefined,
-    sort: number | undefined
+    sort: number | undefined,
+    term: string | undefined
   ) => {
-    console.info(`getAllBoks Base URL ${apiUrl}`);
-
-    const url = getURL(month, year, rating, sort);
-    console.info(`getAllBoks Calculated URL ${url}`);
-
+    const url = getURL(month, year, rating, sort, term);
     try {
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       }
       const json = await response.json();
-      console.log(json);
       return json;
     } catch (error) {
       const e = error as Error;
@@ -92,7 +90,6 @@ function App() {
         throw new Error(`Response status: ${response.status}`);
       }
       const json = await response.json();
-      console.log(json);
       return json;
     } catch (error) {
       const e = error as Error;
@@ -100,11 +97,12 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    console.log("useEffect");
+  const setTerm = (e: any) => {
+    setSearchTerm(encodeURI(e.target.value));
+  };
 
+  useEffect(() => {
     const getBooks = async () => {
-      console.log("getBooks");
       if (!activeYears) {
         const historicallyActiveYears = await getAllYears();
         setActiveYears(historicallyActiveYears);
@@ -113,15 +111,21 @@ function App() {
         selectedMonth,
         selectedYear,
         selectedRating,
-        selectedSortOrder
+        selectedSortOrder,
+        searchTerm
       );
-      console.log(books);
       setCurrentData(books.books);
       setPagesRead(books.numberOfPages);
     };
 
     getBooks();
-  }, [selectedMonth, selectedYear, selectedRating, selectedSortOrder]);
+  }, [
+    selectedMonth,
+    selectedYear,
+    selectedRating,
+    selectedSortOrder,
+    searchTerm,
+  ]);
 
   const optionYears = activeYears?.map((year: any) => {
     return (
@@ -212,6 +216,19 @@ function App() {
         {/* Months / Years / Ratings / Sorting */}
 
         <div className="container my-4">
+          <div className="row">
+            <div className="col-xs-12 col-sm-6 col-md-3 mb-4">
+              <label htmlFor="searchInput" className="text-light">
+                Title Search
+              </label>
+              <input
+                id="searchInput"
+                className="form-control"
+                type="text"
+                onChange={(e) => setTerm(e)}
+              ></input>
+            </div>
+          </div>
           <div className="row">
             <div className="col-xs-12 col-sm-6 col-md-3">
               <select
