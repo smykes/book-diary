@@ -1,6 +1,6 @@
 {
   "name": "book-diary",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "homepage": "/book-diary",
   "type": "module",
