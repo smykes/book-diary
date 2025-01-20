@@ -1,6 +1,6 @@
 {
   "name": "book-diary",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "homepage": "/book-diary",
   "type": "module",
@@ -8,9 +8,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@types/better-sqlite3": "^7.6.12",
     "@vitejs/plugin-react": "^4.2.1",
-    "better-sqlite3": "^11.7.2",
     "bootstrap": "^5.3.3",
     "classnames": "^2.5.1",
     "react": "^18.1.0",
