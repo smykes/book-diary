@@ -2,6 +2,10 @@
 
 Created with spite in Chicago, IL sometime in the 21st century.
 
+This is the front-end portion of this application. A lot of this Read Me refers to an old version before this had a backend, they are split up, but I haven't made the backend public yet.
+
+It uses React, Vite, Typescript, and Tailwind.
+
 ## Why
 
 I wanted to be able to look at the books I read in a quicker way, in an interface that was easier for me to read than what goodreads&#8482; offered. I wanted to easily see how many books, pages, etc I had read in a year, or a month. I also wanted to be able to find books based off my ratings. This application does this.
@@ -25,7 +29,7 @@ Rename the file to `books.json` and stick it in `./src/data`. You can really nam
 
 ## Deploying
 
-Just run `npm run build` from the root directory and then put it wherever you want. I put it in an S3 buckect, [my copy](http://secondrunnerup.com/book-diary/) with no SSL cert, yeah I know, but cloudflare and Root53 are a pain in the but to setup.
+Just run `npm run build` from the root directory and then put it wherever you want. I put it in on Netlify, [my copy](https://bookcasegr.netlify.app/).
 
 ## This is pretty janky (scuff for you younguns)
 
