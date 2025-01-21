@@ -217,7 +217,7 @@ function App() {
           </label>
           <input
             id="searchInput"
-            className="rounded h-10 px-2"
+            className="rounded h-10 px-2 dark:bg-gray-800 dark:text-gray-100"
             type="text"
             onChange={(e) => setTerm(e)}
           ></input>
@@ -234,7 +234,7 @@ function App() {
           </label>
           <select
             id="optionYear"
-            className="w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700"
+            className="w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
             aria-label="Year Filter"
             onChange={(e) => {
               if (e.target.value === "-1") {
@@ -266,7 +266,7 @@ function App() {
                 setSelectedMonth(parseInt(e.target.value, 10) + 1);
               }
             }}
-            className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700"
+            className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
           >
             <option value="-1">All Months</option>
             {optionMonths}
@@ -282,7 +282,7 @@ function App() {
           </label>
           <select
             id="optionRating"
-            className=" border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700"
+            className=" border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
             aria-label="Rating Filter"
             onChange={(e) => {
               if (e.target.value === "-1") {
@@ -306,7 +306,7 @@ function App() {
             Sort By
           </label>
           <select
-            className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700"
+            className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
             aria-label="Sort Order"
             onChange={(e) => {
               if (e.target.value === "0") {

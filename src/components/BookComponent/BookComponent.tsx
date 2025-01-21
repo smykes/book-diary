@@ -18,13 +18,13 @@ const BookComponent: React.FC<Book> = (props) => {
 
   return (
     <div className="shadow bg-gray-100 rounded-lg">
-      <div className="w-full rounded-t-lg bg-indigo-700 px-2 py-2 text-sm text-slate-50">
+      <div className="w-full rounded-t-lg dark:bg-slate-900 bg-indigo-700 px-2 py-2 text-sm text-slate-50">
         <h2 className="text-base text-left align-middle">
           <BookTitle isbn={isbn} title={title} bookId={bookId} />
         </h2>
       </div>
-      <div className="py-2 text-gray-900">
-        <ul className="px-2">
+      <div className="py-2 text-gray-900 dark:bg-gray-800 rounded-b-lg">
+        <ul className="px-2 dark:text-gray-400">
           <li>
             <span className="font-semibold">Author:</span> {author}
           </li>
