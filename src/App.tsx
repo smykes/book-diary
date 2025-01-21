@@ -11,6 +11,8 @@ import {
 
 import FooterComponent from "./components/FooterComponent/FooterComponent";
 import NoResultsCommponent from "./components/NoResultsComponent/NoResultsComponent";
+import BookSkeleton from "./components/SkeletonComponent/BookSkeleton";
+import StatisticsSkeleton from "./components/SkeletonComponent/StatisticsSkeleton";
 const apiUrl = ENDPOINT.BACKEND_API;
 
 function App() {
@@ -178,6 +180,7 @@ function App() {
         {/* Average Books Per Week */}
 
         <div className="w-100 flex flex-col gap-2 md:flex-row">
+          {!currentData && <StatisticsSkeleton />}
           {currentData && pagesRead && (
             <StatisticsComponent
               books={currentData.length}
@@ -190,6 +193,7 @@ function App() {
             />
           )}
 
+          {!currentData && <StatisticsSkeleton />}
           {currentData && pagesRead && (
             <StatisticsComponent
               books={0}
@@ -213,7 +217,7 @@ function App() {
           </label>
           <input
             id="searchInput"
-            className="rounded h-10"
+            className="rounded h-10 px-2"
             type="text"
             onChange={(e) => setTerm(e)}
           ></input>
@@ -322,6 +326,7 @@ function App() {
 
         <div className="flex flex-col gap-3 mb-2">
           {currentData && bookComponent}
+          {!currentData && <BookSkeleton />}
           {currentData?.length === 0 && <NoResultsCommponent />}
         </div>
       </main>
