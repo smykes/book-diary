@@ -1,17 +1,8 @@
-import bookTitleStyles from "./BookTitleComponent.module.scss";
-
 function getParsedISBN(
   isbn: string | undefined,
   bookId: number
 ): string | undefined {
   return isbn?.split('"').pop();
-  // const match = isbn.match(/=\\"(\d{10})/g);
-  // if (match) {
-  //   console.log(match);
-  //   return match[1];
-  // }
-  // console.log(match);
-  // return "";
 }
 interface BookTitleText {
   isbn: string | undefined;
@@ -26,6 +17,7 @@ export const BookTitle: React.FC<BookTitleText> = (props) => {
     <>
       {parsedISBN && (
         <a
+          className="hover:underline text-lime-500"
           target="_blank"
           href={`//search.worldcat.org/search?q=${parsedISBN}`}
         >

@@ -5,12 +5,10 @@ import StatisticsComponent from "./components/StatisticsComponent/StatisticsComp
 import { MONTH_DATA, BOOK_RATINGS, ENDPOINT } from "./constants";
 import { BookType, MonthObject } from "./types/index";
 import {
-  getPageCounts,
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
 } from "./utils/functions/helpers";
 
-import "./styles/styles.scss";
 import FooterComponent from "./components/FooterComponent/FooterComponent";
 import NoResultsCommponent from "./components/NoResultsComponent/NoResultsComponent";
 const apiUrl = ENDPOINT.BACKEND_API;
@@ -171,135 +169,158 @@ function App() {
 
   return (
     <div className="App">
-      <header>
-        <NavigationComponent />
-      </header>
+      <NavigationComponent />
 
-      <main>
+      <main className="px-7">
         {/* Books Per Month */}
         {/* Pages Per Month */}
         {/* Average Pages Per Day */}
         {/* Average Books Per Week */}
 
-        <div className="container">
-          <div className="row">
-            <div className="col-12 col-sm-6">
-              {currentData && pagesRead && (
-                <StatisticsComponent
-                  books={currentData.length}
-                  pages={0}
-                  phrase={getComponentPhraseForBooks(
-                    selectedYear,
-                    selectedMonth,
-                    selectedRating
-                  )}
-                />
+        <div className="w-100 flex flex-col gap-2 md:flex-row">
+          {currentData && pagesRead && (
+            <StatisticsComponent
+              books={currentData.length}
+              pages={0}
+              phrase={getComponentPhraseForBooks(
+                selectedYear,
+                selectedMonth,
+                selectedRating
               )}
-            </div>
+            />
+          )}
 
-            <div className="col-12 col-sm-6">
-              {currentData && pagesRead && (
-                <StatisticsComponent
-                  books={0}
-                  pages={pagesRead}
-                  phrase={getComponentPhraseForPages(
-                    selectedYear,
-                    selectedMonth,
-                    selectedRating
-                  )}
-                />
+          {currentData && pagesRead && (
+            <StatisticsComponent
+              books={0}
+              pages={pagesRead}
+              phrase={getComponentPhraseForPages(
+                selectedYear,
+                selectedMonth,
+                selectedRating
               )}
-            </div>
-          </div>
+            />
+          )}
         </div>
 
-        {/* Months / Years / Ratings / Sorting */}
+        {/* Title Search */}
+        <div className="w-100 mt-4 flex flex-col">
+          <label
+            htmlFor="titleSearch"
+            className="blocktext-slate-800 text-sm font-medium text-gray-100 dark:text-slate-800"
+          >
+            Title Search
+          </label>
+          <input
+            id="searchInput"
+            className="rounded h-10"
+            type="text"
+            onChange={(e) => setTerm(e)}
+          ></input>
+        </div>
 
-        <div className="container my-4">
-          <div className="row">
-            <div className="col-xs-12 col-sm-6 col-md-3 mb-4">
-              <label htmlFor="searchInput" className="text-light">
-                Title Search
-              </label>
-              <input
-                id="searchInput"
-                className="form-control"
-                type="text"
-                onChange={(e) => setTerm(e)}
-              ></input>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-xs-12 col-sm-6 col-md-3">
-              <select
-                className="form-select"
-                aria-label="Month Filter"
-                onChange={(e) => {
-                  if (e.target.value === "-1") {
-                    setSelectedMonth(undefined);
-                  } else {
-                    setSelectedMonth(parseInt(e.target.value, 10) + 1);
-                  }
-                }}
-              >
-                <option value="-1">All Months</option>
-                {optionMonths}
-              </select>
-            </div>
-            <div className="col-xs-12 col-sm-6 col-md-3">
-              <select
-                className="form-select"
-                aria-label="Year Filter"
-                onChange={(e) => {
-                  if (e.target.value === "-1") {
-                    setSelectedYear(undefined);
-                  } else {
-                    setSelectedYear(parseInt(e.target.value, 10));
-                  }
-                }}
-              >
-                <option value="-1">All Years</option>
-                {optionYears}
-              </select>
-            </div>
-            <div className="col-xs-12 col-sm-6 col-md-3">
-              <select
-                className="form-select"
-                aria-label="Rating Filter"
-                onChange={(e) => {
-                  if (e.target.value === "-1") {
-                    setSelectedRating(undefined);
-                  } else {
-                    setSelectedRating(parseInt(e.target.value, 10));
-                  }
-                }}
-              >
-                <option value="-1">All Ratings</option>
-                {optionRatings}
-              </select>
-            </div>
-            <div className="col-xs-12 col-sm-6 col-md-3">
-              <select
-                className="form-select"
-                aria-label="Sort Order"
-                onChange={(e) => {
-                  if (e.target.value === "0") {
-                    setSelectedOrder(0);
-                  } else {
-                    setSelectedOrder(1);
-                  }
-                }}
-              >
-                <option value="0">Asc Date</option>
-                <option value="1">Desc Date</option>
-              </select>
-            </div>
-          </div>
+        {/* New Months / Years / Ratings / Sorting */}
+        <div className="w-100 flex flex-col gap-2 md:flex-row mt-4 mb-2">
+          {/* Years */}
+          <label
+            htmlFor="optionYear"
+            className="text-sm font-medium text-gray-900 dark:text-slate-800 sr-only"
+          >
+            Select a Year
+          </label>
+          <select
+            id="optionYear"
+            className="w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700"
+            aria-label="Year Filter"
+            onChange={(e) => {
+              if (e.target.value === "-1") {
+                setSelectedYear(undefined);
+              } else {
+                setSelectedYear(parseInt(e.target.value, 10));
+              }
+            }}
+          >
+            <option value="-1">All Years</option>
+            {optionYears}
+          </select>
+          {/* End Years */}
+
+          {/* Months */}
+          <label
+            htmlFor="optionMonth"
+            className="text-sm font-medium text-gray-900 dark:text-slate-800 sr-only"
+          >
+            Select a Month
+          </label>
+          <select
+            id="optionMonth"
+            aria-label="Month Filter"
+            onChange={(e) => {
+              if (e.target.value === "-1") {
+                setSelectedMonth(undefined);
+              } else {
+                setSelectedMonth(parseInt(e.target.value, 10) + 1);
+              }
+            }}
+            className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700"
+          >
+            <option value="-1">All Months</option>
+            {optionMonths}
+          </select>
+          {/* End Months */}
+
+          {/* Ratings */}
+          <label
+            htmlFor="optionRating"
+            className="text-sm font-medium text-gray-900 dark:text-slate-800 sr-only"
+          >
+            Select a Rating
+          </label>
+          <select
+            id="optionRating"
+            className=" border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700"
+            aria-label="Rating Filter"
+            onChange={(e) => {
+              if (e.target.value === "-1") {
+                setSelectedRating(undefined);
+              } else {
+                setSelectedRating(parseInt(e.target.value, 10));
+              }
+            }}
+          >
+            <option value="-1">All Ratings</option>
+            {optionRatings}
+          </select>
+
+          {/* End Ratings */}
+
+          {/* Sort By */}
+          <label
+            htmlFor="optionRating"
+            className="border-gray-300 text-sm font-medium text-gray-900 dark:text-slate-800 sr-only"
+          >
+            Sort By
+          </label>
+          <select
+            className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700"
+            aria-label="Sort Order"
+            onChange={(e) => {
+              if (e.target.value === "0") {
+                setSelectedOrder(0);
+              } else {
+                setSelectedOrder(1);
+              }
+            }}
+          >
+            <option value="0">Asc Date</option>
+            <option value="1">Desc Date</option>
+          </select>
+          {/* End Sort By */}
         </div>
 
         {/* Book List */}
 
-        <div className="container">
+        <div className="flex flex-col gap-3 mb-2">
           {currentData && bookComponent}
           {currentData?.length === 0 && <NoResultsCommponent />}
         </div>
