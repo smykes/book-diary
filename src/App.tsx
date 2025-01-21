@@ -217,7 +217,7 @@ function App() {
           </label>
           <input
             id="searchInput"
-            className="rounded h-10"
+            className="rounded h-10 px-2"
             type="text"
             onChange={(e) => setTerm(e)}
           ></input>
