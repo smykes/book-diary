@@ -11,7 +11,7 @@ const NoResultsCommponent = () => {
         <p className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
           Choose your fate:
         </p>
-        <p className="flex items-center text-sm font-normal text-gray-50 dark:text-gray-50">
+        <div className="flex items-center text-sm font-normal text-gray-50 dark:text-gray-50">
           {" "}
           <ul className="dark:text-gray-50 text-gray-900 ">
             <li>I had not started using a Kindle yet.</li>
@@ -24,7 +24,7 @@ const NoResultsCommponent = () => {
             <li>Some other scenario I can't think of.</li>
             <li>👻 Gohsts in the machine... spooky.</li>
           </ul>
-        </p>
+        </div>
       </div>
     </div>
   );

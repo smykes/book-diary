@@ -13,6 +13,7 @@ import FooterComponent from "./components/FooterComponent/FooterComponent";
 import NoResultsCommponent from "./components/NoResultsComponent/NoResultsComponent";
 import BookSkeleton from "./components/SkeletonComponent/BookSkeleton";
 import StatisticsSkeleton from "./components/SkeletonComponent/StatisticsSkeleton";
+import PaginationComponent from "./components/PaginationComponent/PaginationComponent";
 const apiUrl = ENDPOINT.BACKEND_API;
 
 function App() {
@@ -35,22 +36,27 @@ function App() {
   const [selectedSortOrder, setSelectedOrder] = useState<number>(0);
   const [currentData, setCurrentData] = useState<BookType[] | undefined>();
   const [pagesRead, setPagesRead] = useState<number | undefined>();
+  const [booksRead, setBooksRead] = useState<number | undefined>();
+  const [paginationCount, setPaginationCount] = useState<number | undefined>();
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const getURL = (
     month: number | undefined,
     year: number | undefined,
     rating: number | undefined,
     sort: number | undefined,
-    term: string | undefined
+    term: string | undefined,
+    page: number | undefined
   ): string => {
     let baseUrl = `${apiUrl}/books`;
+    console.log(page);
     console.info(`gerURL Base URL ${baseUrl}`);
-    if (!year && !month && !rating && !sort && !term) return baseUrl;
+    if (!year && !month && !rating && !sort && !term && !page) return baseUrl;
     const sortIt = sort === undefined || sort === 0 ? "asc" : "desc";
-    const varArray = [month, year, rating, sortIt, term];
-    const wordArray = ["month", "year", "rating", "sort", "term"];
+    const varArray = [month, year, rating, sortIt, term, page];
+    const wordArray = ["month", "year", "rating", "sort", "term", "page"];
     let hasFirst = false;
     let urlString;
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 6; i += 1) {
       if (varArray[i]) {
         if (!hasFirst) {
           urlString = `?${wordArray[i]}=${varArray[i]}`;
@@ -67,9 +73,10 @@ function App() {
     year: number | undefined,
     rating: number | undefined,
     sort: number | undefined,
-    term: string | undefined
+    term: string | undefined,
+    page: number | undefined
   ) => {
-    const url = getURL(month, year, rating, sort, term);
+    const url = getURL(month, year, rating, sort, term, page);
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -112,10 +119,13 @@ function App() {
         selectedYear,
         selectedRating,
         selectedSortOrder,
-        searchTerm
+        searchTerm,
+        currentPage
       );
       setCurrentData(books.books);
       setPagesRead(books.numberOfPages);
+      setBooksRead(books.numberOfBooks);
+      setPaginationCount(Math.ceil(books.numberOfPagination));
     };
 
     getBooks();
@@ -125,6 +135,7 @@ function App() {
     selectedRating,
     selectedSortOrder,
     searchTerm,
+    currentPage,
   ]);
 
   const optionYears = activeYears?.map((year: any) => {
@@ -183,7 +194,7 @@ function App() {
           {!currentData && <StatisticsSkeleton />}
           {currentData && pagesRead && (
             <StatisticsComponent
-              books={currentData.length}
+              books={booksRead}
               pages={0}
               phrase={getComponentPhraseForBooks(
                 selectedYear,
@@ -208,20 +219,25 @@ function App() {
         </div>
 
         {/* Title Search */}
-        <div className="w-100 mt-4 flex flex-col">
-          <label
-            htmlFor="titleSearch"
-            className="blocktext-slate-800 text-sm font-medium text-gray-100 dark:text-slate-800"
-          >
-            Title Search
-          </label>
-          <input
-            id="searchInput"
-            className="rounded h-10 px-2 dark:bg-gray-800 dark:text-gray-100"
-            type="text"
-            onChange={(e) => setTerm(e)}
-          ></input>
-        </div>
+        {!!paginationCount && (
+          <div className="w-100 mt-4 flex flex-col">
+            <label
+              htmlFor="titleSearch"
+              className="blocktext-slate-800 text-sm font-medium text-gray-100 dark:text-slate-800"
+            >
+              Title Search
+            </label>
+            <input
+              id="searchInput"
+              className="rounded h-10 px-2 dark:bg-gray-800 dark:text-gray-100"
+              type="text"
+              onChange={(e) => {
+                setTerm(e);
+                setCurrentPage(0);
+              }}
+            ></input>
+          </div>
+        )}
 
         {/* New Months / Years / Ratings / Sorting */}
         <div className="w-100 flex flex-col gap-2 md:flex-row mt-4 mb-2">
@@ -239,8 +255,10 @@ function App() {
             onChange={(e) => {
               if (e.target.value === "-1") {
                 setSelectedYear(undefined);
+                setCurrentPage(0);
               } else {
                 setSelectedYear(parseInt(e.target.value, 10));
+                setCurrentPage(0);
               }
             }}
           >
@@ -262,8 +280,10 @@ function App() {
             onChange={(e) => {
               if (e.target.value === "-1") {
                 setSelectedMonth(undefined);
+                setCurrentPage(0);
               } else {
                 setSelectedMonth(parseInt(e.target.value, 10) + 1);
+                setCurrentPage(0);
               }
             }}
             className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
@@ -287,8 +307,10 @@ function App() {
             onChange={(e) => {
               if (e.target.value === "-1") {
                 setSelectedRating(undefined);
+                setCurrentPage(0);
               } else {
                 setSelectedRating(parseInt(e.target.value, 10));
+                setCurrentPage(0);
               }
             }}
           >
@@ -329,6 +351,12 @@ function App() {
           {!currentData && <BookSkeleton />}
           {currentData?.length === 0 && <NoResultsCommponent />}
         </div>
+        <PaginationComponent
+          pagination={paginationCount}
+          setPage={setCurrentPage}
+          currentPage={currentPage}
+          booksRead={booksRead}
+        />
       </main>
       <FooterComponent />
     </div>
