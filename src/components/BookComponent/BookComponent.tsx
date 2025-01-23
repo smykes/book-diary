@@ -1,8 +1,6 @@
 import React from "react";
 import { BookTitle } from "./BookTitleComponent";
 import { Book } from "../../types";
-import classNames from "classnames";
-import bookComponentStyles from "./BookComponent.module.scss";
 import { formatDate } from "../../utils/functions/helpers";
 const BookComponent: React.FC<Book> = (props) => {
   const {
@@ -40,11 +38,11 @@ const BookComponent: React.FC<Book> = (props) => {
           </li>
           <li>
             <span className="font-semibold">Goodreads Rating:</span>{" "}
-            {averageRating.toPrecision(3)}
+            {Number(averageRating.toPrecision(4))}
           </li>
           <li>
             <span className="font-semibold">Ratings Difference:</span>{" "}
-            {(rating - averageRating).toPrecision(3)}
+            {Number((rating - averageRating).toPrecision(4))}
           </li>
         </ul>
       </div>

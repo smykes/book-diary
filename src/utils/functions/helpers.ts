@@ -5,7 +5,7 @@ const formatNumberWithCommas = (num: number | undefined) => {
   let formatted;
   if (num && num > 0) {
     formatted = new Intl.NumberFormat("en-US", {
-      maximumSignificantDigits: 3,
+      maximumSignificantDigits: 6,
     }).format(num);
   }
   return formatted;
