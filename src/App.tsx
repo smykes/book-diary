@@ -228,7 +228,7 @@ function App() {
               Title Search
             </label>
             <input
-              id="searchInput"
+              id="titleSearch"
               className="rounded h-10 px-2 dark:bg-gray-800 dark:text-gray-100"
               type="text"
               onChange={(e) => {
