@@ -1,5 +1,6 @@
 import * as React from "react";
 import { StatsType } from "../../types";
+import { formatNumberWithCommas } from "../../utils/functions/helpers";
 
 const StatisticsComponent = (props: StatsType) => {
   const { books, pages, phrase } = props;
@@ -12,11 +13,11 @@ const StatisticsComponent = (props: StatsType) => {
         </h2>
         {pages === 0 ? (
           <p className="dark:bg-gray-800 w-full rounded-b-lg bg-slate-100 dark:text-slate-50 p-2">
-            {books}
+            {formatNumberWithCommas(books)}
           </p>
         ) : (
           <p className="dark:bg-gray-800 w-full rounded-b-lg bg-slate-100 dark:text-slate-50 p-2">
-            {pages}
+            {formatNumberWithCommas(pages)}
           </p>
         )}
       </div>

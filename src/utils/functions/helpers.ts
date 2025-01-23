@@ -1,6 +1,15 @@
 import { BookType } from "../../types/index";
 import { MONTH_DATA, ENDPOINT } from "../../constants";
 
+const formatNumberWithCommas = (num: number | undefined) => {
+  let formatted;
+  if (num && num > 0) {
+    formatted = new Intl.NumberFormat("en-US", {
+      maximumSignificantDigits: 3,
+    }).format(num);
+  }
+  return formatted;
+};
 const formatDate = (dateRead: string | null): string => {
   if (dateRead) {
     const d = new Date(dateRead);
@@ -162,4 +171,5 @@ export {
   getComponentPhraseForPages,
   formatDate,
   getURL,
+  formatNumberWithCommas,
 };
