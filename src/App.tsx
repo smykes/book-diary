@@ -7,14 +7,18 @@ import { BookType, MonthObject } from "./types/index";
 import {
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
+  getURL,
 } from "./utils/functions/helpers";
+
+import { getAllBooks, getAllYears } from "./utils/functions/async";
+
+const apiUrl = ENDPOINT.BACKEND_API;
 
 import FooterComponent from "./components/FooterComponent/FooterComponent";
 import NoResultsCommponent from "./components/NoResultsComponent/NoResultsComponent";
 import BookSkeleton from "./components/SkeletonComponent/BookSkeleton";
 import StatisticsSkeleton from "./components/SkeletonComponent/StatisticsSkeleton";
 import PaginationComponent from "./components/PaginationComponent/PaginationComponent";
-const apiUrl = ENDPOINT.BACKEND_API;
 
 function App() {
   const [activeYears, setActiveYears] = useState<number[] | undefined>();
@@ -39,70 +43,6 @@ function App() {
   const [booksRead, setBooksRead] = useState<number | undefined>();
   const [paginationCount, setPaginationCount] = useState<number | undefined>();
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const getURL = (
-    month: number | undefined,
-    year: number | undefined,
-    rating: number | undefined,
-    sort: number | undefined,
-    term: string | undefined,
-    page: number | undefined
-  ): string => {
-    let baseUrl = `${apiUrl}/books`;
-    console.log(page);
-    console.info(`gerURL Base URL ${baseUrl}`);
-    if (!year && !month && !rating && !sort && !term && !page) return baseUrl;
-    const sortIt = sort === undefined || sort === 0 ? "asc" : "desc";
-    const varArray = [month, year, rating, sortIt, term, page];
-    const wordArray = ["month", "year", "rating", "sort", "term", "page"];
-    let hasFirst = false;
-    let urlString;
-    for (let i = 0; i < 6; i += 1) {
-      if (varArray[i]) {
-        if (!hasFirst) {
-          urlString = `?${wordArray[i]}=${varArray[i]}`;
-          hasFirst = true;
-        } else {
-          urlString = `${urlString}&${wordArray[i]}=${varArray[i]}`;
-        }
-      }
-    }
-    return `${baseUrl}${urlString}`;
-  };
-  const getAllBooks = async (
-    month: number | undefined,
-    year: number | undefined,
-    rating: number | undefined,
-    sort: number | undefined,
-    term: string | undefined,
-    page: number | undefined
-  ) => {
-    const url = getURL(month, year, rating, sort, term, page);
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-      const json = await response.json();
-      return json;
-    } catch (error) {
-      const e = error as Error;
-      console.error(e.message);
-    }
-  };
-  const getAllYears = async () => {
-    const url = `${apiUrl}/years`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-      const json = await response.json();
-      return json;
-    } catch (error) {
-      const e = error as Error;
-      console.error(e.message);
-    }
-  };
 
   const setTerm = (e: any) => {
     setSearchTerm(encodeURI(e.target.value));

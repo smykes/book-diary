@@ -1,5 +1,5 @@
 import { BookType } from "../../types/index";
-import { MONTH_DATA } from "../../constants";
+import { MONTH_DATA, ENDPOINT } from "../../constants";
 
 const formatDate = (dateRead: string | null): string => {
   if (dateRead) {
@@ -9,34 +9,6 @@ const formatDate = (dateRead: string | null): string => {
     )} ${d.getDate()}, ${d.getFullYear()}`;
   }
   return "No Date Recorded";
-};
-const getPageCounts = (BookData: BookType[]): number => {
-  let count = 0;
-  BookData.forEach((book) => {
-    if (book.number_of_pages) {
-      count += book.number_of_pages;
-    }
-  });
-
-  return count;
-};
-
-const getIsLeapYear = (year: number): boolean => {
-  // If the year is evenly divisible by 4 (year % 4 === 0)
-  if (year % 4 === 0) {
-    // If the year is evenly divisible by 100 (year % 100 === 0)
-    if (year % 100 === 0) {
-      // If the year is divisble by 400 (year % 400 === 0)
-      if (year % 400 === 0) {
-        return true;
-      }
-      // If it is not divisble by 100 (year % 100 !== 0)
-    } else {
-      return true;
-    }
-  }
-
-  return false;
 };
 
 const getMonthYearLabel = (
@@ -70,57 +42,6 @@ const getMonthName = (month: number | undefined) => {
   if (month) return `${MONTH_DATA[month - 1].monthName}`;
   return "All Months";
 };
-
-// All Books
-
-// Books read all time with any rating
-// selectedMonth === undefined && selectedYear === undefined && selectedRating === undefined
-// currentData.length
-// ------------------------
-
-// Books read all time with rating {r}
-// selectedMonth !== undefined && selectedYeare !== undefined && selectedRating !== undefined
-// currentData.length
-// ------------------------
-
-// Months
-
-// Books read in Month {m} any year {y}, with any Rating
-// selectedMonth === undefined && selectedYear !== undefined && selectedRating === undefined
-// currentData.length
-// ------------------------
-
-// Books read in Month {m} any year, with rating {y}
-// selectedMonth !== undefined && selectedYear === undefined && selectedRating === undefined
-// currentData.length
-// ------------------------
-
-// Years
-
-// Books read in any Month and year {y}, with any rating
-// selectedMonth === undefined && selectedYear !== undefined && selectedRating === undefined
-// currentData.length
-// -----------------------
-
-// Books read in any Month and year {y}, with {r} rating
-// selectedMonth === undefined && selectedYear !== undefined
-// currentData.length
-// -----------------------
-
-// Years and Months
-
-// Books read in month {m} and year {y}, with any rating
-// selectedMonth !== undefined && selectedYear !== undefined && rating === undefined
-// currentData.length
-
-// Books read in month {m} and year {y}, with rating {r}
-// selectedMonth !=== undefined && selectedYear !== undefined && rating !== undefined
-// currentData.length
-
-// Statisics Component
-// pages
-// books
-// phrase
 
 const getComponentPhraseForBooks = (
   year: number | undefined,
@@ -206,12 +127,39 @@ const getComponentPhraseForPages = (
   return "An error occured.";
 };
 
+const getURL = (
+  month: number | undefined,
+  year: number | undefined,
+  rating: number | undefined,
+  sort: number | undefined,
+  term: string | undefined,
+  page: number | undefined
+): string => {
+  let baseUrl = `${ENDPOINT.BACKEND_API}/books`;
+  if (!year && !month && !rating && !sort && !term && !page) return baseUrl;
+  const sortIt = sort === undefined || sort === 0 ? "asc" : "desc";
+  const varArray = [month, year, rating, sortIt, term, page];
+  const wordArray = ["month", "year", "rating", "sort", "term", "page"];
+  let hasFirst = false;
+  let urlString;
+  for (let i = 0; i < 6; i += 1) {
+    if (varArray[i]) {
+      if (!hasFirst) {
+        urlString = `?${wordArray[i]}=${varArray[i]}`;
+        hasFirst = true;
+      } else {
+        urlString = `${urlString}&${wordArray[i]}=${varArray[i]}`;
+      }
+    }
+  }
+  return `${baseUrl}${urlString}`;
+};
+
 export {
-  getPageCounts,
-  getIsLeapYear,
   getMonthYearLabel,
   getMonthName,
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
   formatDate,
+  getURL,
 };
