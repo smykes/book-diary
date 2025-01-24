@@ -159,25 +159,24 @@ function App() {
         </div>
 
         {/* Title Search */}
-        {!!paginationCount && (
-          <div className="w-100 mt-4 flex flex-col">
-            <label
-              htmlFor="titleSearch"
-              className="blocktext-slate-800 text-sm font-medium text-gray-100 dark:text-slate-800"
-            >
-              Title Search
-            </label>
-            <input
-              id="titleSearch"
-              className="rounded h-10 px-2 dark:bg-gray-800 dark:text-gray-100"
-              type="text"
-              onChange={(e) => {
-                setTerm(e);
-                setCurrentPage(0);
-              }}
-            ></input>
-          </div>
-        )}
+
+        <div className="w-100 mt-4 flex flex-col">
+          <label
+            htmlFor="titleSearch"
+            className="blocktext-slate-800 text-sm font-medium text-gray-100 dark:text-slate-800"
+          >
+            Title Search
+          </label>
+          <input
+            id="titleSearch"
+            className="rounded h-10 px-2 dark:bg-gray-800 dark:text-gray-100"
+            type="text"
+            onChange={(e) => {
+              setTerm(e);
+              setCurrentPage(0);
+            }}
+          ></input>
+        </div>
 
         {/* New Months / Years / Ratings / Sorting */}
         <div className="w-100 flex flex-col gap-2 md:flex-row mt-4 mb-2">

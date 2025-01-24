@@ -16,7 +16,7 @@ const PaginationComponent = (props: IPaginationComponentProps) => {
     if (currentPage !== undefined) setPage(currentPage + value);
   };
 
-  const getLastNumber = () => {
+  const getLastNumber = (booksRead: number | undefined) => {
     if (booksRead !== undefined) {
       if (currentPage + 1 === pagination) {
         return booksRead;
@@ -40,7 +40,7 @@ const PaginationComponent = (props: IPaginationComponentProps) => {
             </span>{" "}
             -{" "}
             <span className="font-semibold text-gray-400 dark:text-white">
-              {getLastNumber()}
+              {getLastNumber(booksRead)}
             </span>{" "}
             of{" "}
             <span className="font-semibold text-gray-400 dark:text-white">
