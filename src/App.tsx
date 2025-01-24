@@ -163,7 +163,7 @@ function App() {
         <div className="w-100 mt-4 flex flex-col">
           <label
             htmlFor="titleSearch"
-            className="blocktext-slate-800 text-sm font-medium text-gray-100 dark:text-slate-800"
+            className="blocktext-slate-800 text-sm font-medium text-gray-100 dark:text-white"
           >
             Title Search
           </label>
