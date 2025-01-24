@@ -32,8 +32,8 @@ const PaginationComponent = (props: IPaginationComponentProps) => {
     <nav>
       <div className="flex flex-col items-center">
         {!!pagination && (
-          <span className="text-sm text-gray-100 dark:text-gray-400">
-            Showing{" "}
+          <span className="text-sm text-gray-100 dark:text-gray-100">
+            <span className="dark:text-gray-100">Showing </span>
             <span className="font-semibold text-gray-400 dark:text-white">
               {pagination && currentPage === 0 && "1"}
               {pagination && currentPage > 0 && 10 * currentPage}

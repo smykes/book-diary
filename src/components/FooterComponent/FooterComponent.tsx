@@ -6,7 +6,7 @@ const FooterComponent = () => {
           🖤 Made with spite by{" "}
           <a
             href="//smykes.github.io/"
-            className="hover:underline dark:text-neutral-200"
+            className="underline hover:underline dark:text-neutral-200"
           >
             smykes
           </a>{" "}
@@ -16,7 +16,7 @@ const FooterComponent = () => {
           <li>
             <a
               href="//github.com/smykes"
-              className="hover:underline me-4 md:me-6 dark:text-neutral-200"
+              className="underline hover:underline me-4 md:me-6 dark:text-neutral-200"
             >
               About
             </a>

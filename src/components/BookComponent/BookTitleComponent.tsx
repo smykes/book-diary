@@ -17,7 +17,7 @@ export const BookTitle: React.FC<BookTitleText> = (props) => {
     <>
       {parsedISBN && (
         <a
-          className="hover:underline text-lime-500 dark:text-orange-800"
+          className="underline text-lime-500 dark:text-orange-400"
           target="_blank"
           href={`//search.worldcat.org/search?q=${parsedISBN}`}
         >
