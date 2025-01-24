@@ -19,6 +19,7 @@ import NoResultsCommponent from "./components/NoResultsComponent/NoResultsCompon
 import BookSkeleton from "./components/SkeletonComponent/BookSkeleton";
 import StatisticsSkeleton from "./components/SkeletonComponent/StatisticsSkeleton";
 import PaginationComponent from "./components/PaginationComponent/PaginationComponent";
+import TitleSearchComponent from "./components/TitleSearchComponent/TitleSearchComponent";
 
 function App() {
   const [activeYears, setActiveYears] = useState<number[] | undefined>();
@@ -161,21 +162,10 @@ function App() {
         {/* Title Search */}
 
         <div className="w-100 mt-4 flex flex-col">
-          <label
-            htmlFor="titleSearch"
-            className="blocktext-slate-800 text-sm font-medium text-gray-100 dark:text-white"
-          >
-            Title Search
-          </label>
-          <input
-            id="titleSearch"
-            className="rounded h-10 px-2 dark:bg-gray-800 dark:text-gray-100"
-            type="text"
-            onChange={(e) => {
-              setTerm(e);
-              setCurrentPage(0);
-            }}
-          ></input>
+          <TitleSearchComponent
+            setTerm={setTerm}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
 
         {/* New Months / Years / Ratings / Sorting */}
