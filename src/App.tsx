@@ -7,6 +7,7 @@ import { BookType, MonthObject } from "./types/index";
 import {
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
+  getMonthsByYear,
   getURL,
 } from "./utils/functions/helpers";
 
@@ -67,6 +68,9 @@ function App() {
       setPagesRead(books.numberOfPages);
       setBooksRead(books.numberOfBooks);
       setPaginationCount(Math.ceil(books.numberOfPagination));
+      if (selectedYear !== undefined) {
+        console.log(getMonthsByYear(selectedYear));
+      }
     };
 
     getBooks();
@@ -87,15 +91,30 @@ function App() {
     );
   });
 
-  const optionMonths = MONTH_DATA.map(
-    (currentMonth: MonthObject, index: number) => {
-      return (
-        <option key={currentMonth.monthName} value={index}>
-          {currentMonth.monthName}
-        </option>
+  const optionMonths = () => {
+    if (
+      selectedYear !== undefined &&
+      selectedYear === new Date().getFullYear()
+    ) {
+      return getMonthsByYear(selectedYear).map(
+        (currentMonth: MonthObject, index: number) => {
+          return (
+            <option key={currentMonth.monthName} value={index}>
+              {currentMonth.monthName}
+            </option>
+          );
+        }
       );
+    } else {
+      return MONTH_DATA.map((currentMonth: MonthObject, index: number) => {
+        return (
+          <option key={currentMonth.monthName} value={index}>
+            {currentMonth.monthName}
+          </option>
+        );
+      });
     }
-  );
+  };
 
   const optionRatings = BOOK_RATINGS.map((rating: number) => {
     return (
@@ -218,7 +237,7 @@ function App() {
             className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
           >
             <option value="-1">All Months</option>
-            {optionMonths}
+            {optionMonths()}
           </select>
           {/* End Months */}
 

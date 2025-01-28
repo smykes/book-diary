@@ -164,6 +164,19 @@ const getURL = (
   return `${baseUrl}${urlString}`;
 };
 
+const getMonthsByYear = (year: number) => {
+  const cuurentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth();
+  let months = [];
+  if (year === cuurentYear) {
+    console.log("hit");
+    for (let i = 0; i < currentMonth + 1; i += 1) {
+      months.push(MONTH_DATA[i]);
+    }
+  }
+  return months;
+};
+
 export {
   getMonthYearLabel,
   getMonthName,
@@ -172,4 +185,5 @@ export {
   formatDate,
   getURL,
   formatNumberWithCommas,
+  getMonthsByYear,
 };
