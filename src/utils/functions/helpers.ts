@@ -1,6 +1,7 @@
 import { BookType } from "../../types/index";
 import { MONTH_DATA, ENDPOINT } from "../../constants";
 
+// ✅
 const formatNumberWithCommas = (num: number | undefined) => {
   let formatted;
   if (num && num > 0) {
@@ -10,9 +11,14 @@ const formatNumberWithCommas = (num: number | undefined) => {
   }
   return formatted;
 };
+
+// ✅
 const formatDate = (dateRead: string | null): string => {
   if (dateRead) {
     const d = new Date(dateRead);
+    if (isNaN(d.getTime())) {
+      return "Invalid Date";
+    }
     return `${getMonthName(
       d.getMonth() + 1
     )} ${d.getDate()}, ${d.getFullYear()}`;
@@ -20,38 +26,13 @@ const formatDate = (dateRead: string | null): string => {
   return "No Date Recorded";
 };
 
-const getMonthYearLabel = (
-  modifier: string,
-  month: number | undefined,
-  year: number | undefined
-): string => {
-  // All years all months.
-
-  // Book Count {MM/YYYY}:
-  // Page Count {}:
-
-  // All Books since the beginning.
-  if (month === undefined && year === undefined) {
-    return "All Books all time.";
-  }
-  // A month all year specified
-  if (month === undefined && year !== undefined) return `Book Count ${year}`;
-
-  // A month year specified
-  if (month !== undefined && year === undefined)
-    return `${modifier} ${MONTH_DATA[month - 1].monthName} all years.`;
-
-  // If year and month are defined.
-  if (month !== undefined && year !== undefined)
-    return `1234 ${modifier} ${MONTH_DATA[month - 1].monthName}, ${year}.`;
-  return "Something went wrong.";
-};
-
+// ✅
 const getMonthName = (month: number | undefined) => {
   if (month) return `${MONTH_DATA[month - 1].monthName}`;
   return "All Months";
 };
 
+// ✅
 const getComponentPhraseForBooks = (
   year: number | undefined,
   month: number | undefined,
@@ -94,6 +75,7 @@ const getComponentPhraseForBooks = (
   return "An error occured.";
 };
 
+// ✅
 const getComponentPhraseForPages = (
   year: number | undefined,
   month: number | undefined,
@@ -136,6 +118,7 @@ const getComponentPhraseForPages = (
   return "An error occured.";
 };
 
+// ✅
 const getURL = (
   month: number | undefined,
   year: number | undefined,
@@ -164,12 +147,12 @@ const getURL = (
   return `${baseUrl}${urlString}`;
 };
 
+// ✅
 const getMonthsByYear = (year: number) => {
   const cuurentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   let months = [];
   if (year === cuurentYear) {
-    console.log("hit");
     for (let i = 0; i < currentMonth + 1; i += 1) {
       months.push(MONTH_DATA[i]);
     }
@@ -178,12 +161,12 @@ const getMonthsByYear = (year: number) => {
 };
 
 export {
-  getMonthYearLabel,
-  getMonthName,
+  formatDate,
+  formatNumberWithCommas,
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
-  formatDate,
-  getURL,
-  formatNumberWithCommas,
+  getMonthName,
   getMonthsByYear,
+  getURL,
 };
+//

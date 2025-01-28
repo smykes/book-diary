@@ -1,31 +1,47 @@
 // import { render } from "@testing-library/react";
-// import { describe, test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 // import { bookMockDataA, bookMockDataB } from "./helpers.mock";
 // import { getIsLeapYear, getPageCounts, getMonthYearLabel } from "./helpers";
 
+import { formatNumberWithCommas, formatDate } from "./helpers";
+
+const ipa = "is passed a";
+
+describe("helper functions", () => {
+  describe("fn: formatNumberWithCommas", () => {
+    test(`When a whole numeber with 4 digits ${ipa} string with a comma after the first number is returned.`, () => {
+      expect(formatNumberWithCommas(1000)).toEqual("1,000");
+    });
+    test(`When a two digit whole number ${ipa} two digit string is returned with no commas or decimals`, () => {
+      expect(formatNumberWithCommas(12)).toEqual("12");
+    });
+    test(`When a number with two decimals under one hundred ${ipa} string with no commas two digits and a hundreths place is returned.`, () => {
+      expect(formatNumberWithCommas(12.34)).toEqual("12.34");
+    });
+    test(`When a number in the billions ${ipa} string with three commas is returned.`, () => {
+      expect(formatNumberWithCommas(1234456543)).toEqual("1,234,460,000");
+    });
+    test(`When a three digit number ${ipa} string with no commas is returned`, () => {
+      expect(formatNumberWithCommas(140)).toEqual("140");
+    });
+  });
+
+  describe("fn: formatDate", () => {
+    test(`When no date is passed in a message saying that is passed out`, () => {
+      expect(formatDate(null)).toEqual("No Date Recorded");
+    });
+    test(`When a yyyy/mm/dd string is passed in a MM/dd/YYYY is returned`, () => {
+      expect(formatDate("2025/01/26")).toEqual("January 26, 2025");
+    });
+    // Should test the date object maybe?
+    test(`When a yyyy/mm/ddd string is passed in invalid date is returned`, () => {
+      expect(formatDate("2025/01/264")).toEqual("Invalid Date");
+    });
+  });
+});
+
 // describe("helper functions", () => {
-//   describe("getIsLeapYear()", () => {
-//     describe("Check for positive leap years.", () => {
-//       const leapYears = [
-//         1904, 1908, 1912, 1916, 1920, 1924, 1928, 1932, 1936, 1940, 1944, 1948,
-//         1952, 1956, 1960, 1964, 1968, 1972, 1976, 1980, 1984, 1988, 1992, 1996,
-//         2000, 2004, 2008, 2012, 2016, 2020, 2024, 2028,
-//       ];
-//       leapYears.forEach((year) => {
-//         test(`When ${year} is entered true is returnerd.`, () => {
-//           expect(getIsLeapYear(year)).toBeTruthy();
-//         });
-//       });
-//     });
-//     describe("Check for negaive leap years.", () => {
-//       const leapYears = [1900, 1907, 2022, 2023, 2025, 2026];
-//       leapYears.forEach((year) => {
-//         test(`When ${year} is entered false is returnerd.`, () => {
-//           expect(getIsLeapYear(year)).toBeFalsy();
-//         });
-//       });
-//     });
-//   });
+//
 //   /*--------------------------------*/
 //   // describe("getPageCounts()", () => {
 //   //   test("Check for number of pages regardless of read or not.", () => {
