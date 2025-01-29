@@ -1,9 +1,15 @@
 // import { render } from "@testing-library/react";
 import { describe, test, expect } from "vitest";
-// import { bookMockDataA, bookMockDataB } from "./helpers.mock";
-// import { getIsLeapYear, getPageCounts, getMonthYearLabel } from "./helpers";
 
-import { formatNumberWithCommas, formatDate } from "./helpers";
+import {
+  formatNumberWithCommas,
+  formatDate,
+  getMonthName,
+  getComponentPhraseForBooks,
+  getIsValidMonth,
+  getIsValidRating,
+  getComponentPhraseForPages,
+} from "./helpers";
 
 const ipa = "is passed a";
 
@@ -37,82 +43,352 @@ describe("helper functions", () => {
     test(`When a yyyy/mm/ddd string is passed in invalid date is returned`, () => {
       expect(formatDate("2025/01/264")).toEqual("Invalid Date");
     });
+    test(`When a yyyy/mm/dd string is passed in and the month does not exist invalid date is returned`, () => {
+      expect(formatDate("2025/00/26")).toEqual("Invalid Date");
+    });
+  });
+
+  describe("fn: getIsValidMonth", () => {
+    test(`If a number > 0 && <= 12 is passed in true should be returned.`, () => {
+      expect(getIsValidMonth(10)).toBeTruthy();
+    });
+    test(`If a number <= 0 is passed in false should be returned.`, () => {
+      expect(getIsValidMonth(0)).toBeFalsy();
+    });
+    test(`If a number > 12 is passed in false should be returned.`, () => {
+      expect(getIsValidMonth(13)).toBeFalsy();
+    });
+  });
+
+  describe("fn: getIsValidRating", () => {
+    test(`If a number > 0 && <= 5 is passed in true should be returned.`, () => {
+      expect(getIsValidRating(5)).toBeTruthy();
+    });
+    test(`If a number > 5 is passed in false should be returned.`, () => {
+      expect(getIsValidRating(23)).toBeFalsy();
+    });
+    test(`If a number < 1 is passed in false should be returned.`, () => {
+      expect(getIsValidRating(0)).toBeFalsy();
+    });
+  });
+
+  describe("fn: getMonthName", () => {
+    test(`If the undefined is passed in "All Months" are returned`, () => {
+      expect(getMonthName(undefined)).toEqual("All Months");
+    });
+    test(`If the 10 is passed in "October" is returned`, () => {
+      expect(getMonthName(10)).toEqual("October");
+    });
+    test(`If the 12 is passed in "December is returned"`, () => {
+      expect(getMonthName(12)).toEqual("December");
+    });
+    test(`If the 0 is passed in a strig representing an error is returned`, () => {
+      expect(getMonthName(0)).toEqual(
+        "An error has occured, month must be a whole number between 1 and 12"
+      );
+    });
+    test(`If the 14 is passed in a strig representing an error is returned`, () => {
+      expect(getMonthName(14)).toEqual(
+        "An error has occured, month must be a whole number between 1 and 12"
+      );
+    });
+    test(`If the -2 is passed in in a strig representing an error is returned`, () => {
+      expect(getMonthName(-2)).toEqual(
+        "An error has occured, month must be a whole number between 1 and 12"
+      );
+    });
+    test(`If the 13 is passed in in a strig representing an error is returned`, () => {
+      expect(getMonthName(-2)).toEqual(
+        "An error has occured, month must be a whole number between 1 and 12"
+      );
+    });
+  });
+
+  describe("fn: getComponentPhraseForBooks", () => {
+    // Year
+    describe("year", () => {
+      test(`If all parameters are undefined "Books read all time" should be returned.`, () => {
+        expect(
+          getComponentPhraseForBooks(undefined, undefined, undefined)
+        ).toEqual("Books read all time");
+      });
+      test(`If only year is passed in "Books read in {x}" should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2025, undefined, undefined)).toEqual(
+          "Books read in 2025"
+        );
+      });
+    });
+
+    // Month
+    describe("month", () => {
+      test(`If only a valid month is passed in "Books read in the month of {month} all time" should be returned`, () => {
+        expect(getComponentPhraseForBooks(undefined, 10, undefined)).toEqual(
+          "Books read in the month of October all time"
+        );
+      });
+      test(`If only an invalid month (> 12) is passed in "An error has occured." should be returned`, () => {
+        expect(getComponentPhraseForBooks(undefined, 14, undefined)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`If only an invalid month (< 1) is passed in "An error has occured." should be returned`, () => {
+        expect(getComponentPhraseForBooks(undefined, 0, undefined)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Rating
+    describe("rating", () => {
+      test(`If only rating is passed in >=1 && <=5 "Books read all time with a rating of {n}" should be returned.`, () => {
+        expect(getComponentPhraseForBooks(undefined, undefined, 4)).toEqual(
+          "Books read all time with a rating of 4"
+        );
+      });
+      test(`If only rating is passed in and is < 1  "An error has occured."`, () => {
+        expect(getComponentPhraseForBooks(undefined, undefined, 0)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`If only rating is passed in and is > 5  "An error has occured."`, () => {
+        expect(getComponentPhraseForBooks(undefined, undefined, 6)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Year/Month
+
+    describe("year/month", () => {
+      // good year good month
+      test(`good year/good month is passed "Books read in {month} of {year}" should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2024, 10, undefined)).toEqual(
+          "Books read in October of 2024"
+        );
+      });
+      // good year bad month
+      test(`good year/bad month is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2024, 15, undefined)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good year/bad month is passed"An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2024, -3, undefined)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Year/Rating
+
+    describe("year/rating", () => {
+      test(`good year/good rating is passed "Books read in {year} with a rating of {rating}" should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2024, undefined, 4)).toEqual(
+          "Books read in 2024 with a rating of 4"
+        );
+      });
+      test(`good year/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2024, undefined, 6)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good year/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2024, undefined, -2)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Month/Rating
+    describe("month/rating", () => {
+      test(`good month/good rating is passed "Books read in {month} with a rating of {rating}" should be returned.`, () => {
+        expect(getComponentPhraseForBooks(undefined, 11, 4)).toEqual(
+          "Books read in November with a rating of 4"
+        );
+      });
+      test(`bad month/good rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(undefined, 14, 4)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good month/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(undefined, 8, 6)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`bad month/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(undefined, 0, 33)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Year/Month/Rating
+    describe("year/month/raing", () => {
+      test(`good year/good month/good rating is passed "Books read in {month} of {year} with a rating of {rating}" should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2025, 10, 4)).toEqual(
+          "Books read in October of 2025 with a rating of 4"
+        );
+      });
+      test(`good year/bad month/good rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2025, 15, 4)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good year/bad month/good rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2025, 11, 7)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good year/bad month/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForBooks(2025, 0, 7)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+  });
+
+  describe("fn: getComponentPhraseForPages", () => {
+    // Year
+    describe("year", () => {
+      test(`If all parameters are undefined "Books read all time" should be returned.`, () => {
+        expect(
+          getComponentPhraseForPages(undefined, undefined, undefined)
+        ).toEqual("Pages read all time");
+      });
+      test(`If only year is passed in "Books read in {x}" should be returned.`, () => {
+        expect(getComponentPhraseForPages(2025, undefined, undefined)).toEqual(
+          "Pages read in 2025"
+        );
+      });
+    });
+
+    // Month
+    describe("month", () => {
+      test(`If only a valid month is passed in "Books read in the month of {month} all time" should be returned`, () => {
+        expect(getComponentPhraseForPages(undefined, 10, undefined)).toEqual(
+          "Pages read in the month of October all time"
+        );
+      });
+      test(`If only an invalid month (> 12) is passed in "An error has occured." should be returned`, () => {
+        expect(getComponentPhraseForPages(undefined, 14, undefined)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`If only an invalid month (< 1) is passed in "An error has occured." should be returned`, () => {
+        expect(getComponentPhraseForPages(undefined, 0, undefined)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Rating
+    describe("rating", () => {
+      test(`If only rating is passed in >=1 && <=5 "Books read all time with a rating of {n}" should be returned.`, () => {
+        expect(getComponentPhraseForPages(undefined, undefined, 4)).toEqual(
+          "Pages read all time with a rating of 4"
+        );
+      });
+      test(`If only rating is passed in and is < 1  "An error has occured."`, () => {
+        expect(getComponentPhraseForPages(undefined, undefined, 0)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`If only rating is passed in and is > 5  "An error has occured."`, () => {
+        expect(getComponentPhraseForPages(undefined, undefined, 6)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Year/Month
+
+    describe("year/month", () => {
+      // good year good month
+      test(`good year/good month is passed "Books read in {month} of {year}" should be returned.`, () => {
+        expect(getComponentPhraseForPages(2024, 10, undefined)).toEqual(
+          "Pages read in October of 2024"
+        );
+      });
+      // good year bad month
+      test(`good year/bad month is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(2024, 15, undefined)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good year/bad month is passed"An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(2024, -3, undefined)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Year/Rating
+
+    describe("year/rating", () => {
+      test(`good year/good rating is passed "Books read in {year} with a rating of {rating}" should be returned.`, () => {
+        expect(getComponentPhraseForPages(2024, undefined, 4)).toEqual(
+          "Pages read in 2024 with a rating of 4"
+        );
+      });
+      test(`good year/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(2024, undefined, 6)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good year/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(2024, undefined, -2)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Month/Rating
+    describe("month/rating", () => {
+      test(`good month/good rating is passed "Books read in {month} with a rating of {rating}" should be returned.`, () => {
+        expect(getComponentPhraseForPages(undefined, 11, 4)).toEqual(
+          "Pages read in the month of November with a rating of 4 all time"
+        );
+      });
+      test(`bad month/good rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(undefined, 14, 4)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good month/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(undefined, 8, 6)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`bad month/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(undefined, 0, 33)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
+
+    // Year/Month/Rating
+    describe("year/month/raing", () => {
+      test(`good year/good month/good rating is passed "Books read in {month} of {year} with a rating of {rating}" should be returned.`, () => {
+        expect(getComponentPhraseForPages(2025, 10, 4)).toEqual(
+          "Pages read in October of 2025 with a rating of 4"
+        );
+      });
+      test(`good year/bad month/good rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(2025, 15, 4)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good year/bad month/good rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(2025, 11, 7)).toEqual(
+          "An error has occured."
+        );
+      });
+      test(`good year/bad month/bad rating is passed "An error has occured." should be returned.`, () => {
+        expect(getComponentPhraseForPages(2025, 0, 7)).toEqual(
+          "An error has occured."
+        );
+      });
+    });
   });
 });
-
-// describe("helper functions", () => {
-//
-//   /*--------------------------------*/
-//   // describe("getPageCounts()", () => {
-//   //   test("Check for number of pages regardless of read or not.", () => {
-//   //     expect(getPageCounts(bookMockDataA)).toEqual(596);
-//   //   });
-//   //   test("Check for number or pages for only read books", () => {
-//   //     expect(getPageCounts(filterBooksByRead(bookMockDataA))).toEqual(308);
-//   //   });
-//   // });
-//   /*--------------------------------*/
-//   // describe("filterBooksByRead", () => {
-//   //   test("When data is filtered by read only one book is returned.", () => {
-//   //     expect(filterBooksByRead(bookMockDataA)).toHaveLength(1);
-//   //   });
-//   //   test("When data is filtered by read only four book is returned.", () => {
-//   //     expect(filterBooksByRead(bookMockDataB)).toHaveLength(2);
-//   //   });
-//   // });
-//   /*--------------------------------*/
-//   // describe("filterReadBooksByMonthAndYear()", () => {
-//   //   test("When data is filtered just by month and date only one book is returned.", () => {
-//   //     expect(
-//   //       filterReadBooksByMonthAndYear(bookMockDataA, 12, 2020)
-//   //     ).toHaveLength(1);
-//   //   });
-//   //   test("When data is filtered just by month and date no book is returned.", () => {
-//   //     expect(
-//   //       filterReadBooksByMonthAndYear(bookMockDataA, 4, 2020)
-//   //     ).toHaveLength(0);
-//   //   });
-//   //   test("When data is filtered just by month one book is returned.", () => {
-//   //     expect(
-//   //       filterReadBooksByMonthAndYear(bookMockDataA, 12, null)
-//   //     ).toHaveLength(1);
-//   //   });
-//   //   test("When data is filtered just by year one book is returned.", () => {
-//   //     expect(
-//   //       filterReadBooksByMonthAndYear(bookMockDataA, null, 2020)
-//   //     ).toHaveLength(1);
-//   //   });
-//   // });
-//   /*--------------------------------*/
-//   // describe("filterReadBooksByUserRating()", () => {
-//   //   test("When data is filtered by rating of 1 no data is returned", () => {
-//   //     expect(filterReadBooksByUserRating(bookMockDataA, 1)).toHaveLength(0);
-//   //   });
-//   //   test("When data is filtered by rating of 4 two books are returned", () => {
-//   //     expect(filterReadBooksByUserRating(bookMockDataA, 4)).toHaveLength(1);
-//   //   });
-//   // });
-
-//   /*--------------------------------*/
-//   describe("getMonthYearLabel()", () => {
-//     test("When month and year are undefined the string of All Books all time. is returned.", () => {
-//       expect(getMonthYearLabel("", undefined, undefined)).toEqual(
-//         "All Books all time."
-//       );
-//     });
-//     test("When month has value and year is undefined with a modifier of 12345 the string of abcdef 12345 May all years.", () => {
-//       expect(getMonthYearLabel("12345", 5, undefined)).toEqual(
-//         "12345 May all years."
-//       );
-//     });
-//     // test("When month is undefined and year is 2020 with a modifier of abcdef the string of abcdef 12345 books for 4004", () => {
-//     //   expect(getMonthYearLabel("12345", undefined, 4004)).toEqual(
-//     //     "12345 Books for 4004"
-//     //   );
-//     // });
-
-//     // test("When month is 5 and year is 2020 with a modifier of abcdef the string of 12345 May, 4004.", () => {
-//     //   expect(getMonthYearLabel("12345", 5, 4004)).toEqual("12345 May, 4004.");
-//     // });
-//   });
-// });
