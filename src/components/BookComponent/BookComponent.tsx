@@ -15,7 +15,7 @@ const BookComponent: React.FC<Book> = (props) => {
   } = props;
 
   return (
-    <div className="shadow bg-gray-100 rounded-lg">
+    <div className="shadow-sm bg-gray-100 rounded-lg">
       <div className="w-full rounded-t-lg dark:bg-slate-900 bg-indigo-700 px-2 py-2 text-sm text-slate-50">
         <h2 className="text-base text-left align-middle">
           <BookTitle isbn={isbn} title={title} bookId={bookId} />

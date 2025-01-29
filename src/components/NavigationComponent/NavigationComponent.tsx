@@ -7,15 +7,15 @@ const NavigationComponent = () => {
     document.getElementById("sun")?.classList.toggle("hidden");
   };
   return (
-    <nav className="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
-      <div className="dark:text-white w-full mx-auto max-w-screen-xl p-4 flex items-center justify-between">
+    <nav className="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
+      <div className="dark:text-white w-full mx-auto max-w-(--breakpoint-xl) p-4 flex items-center justify-between">
         <div>📚 Book Diary</div>
         <button
           data-tooltip-target="button-icon-only-example-toggle-dark-mode-tooltip"
           type="button"
           data-toggle-dark="dark"
           onClick={changeMode}
-          className="themeButton flex items-center w-9 h-9 justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg toggle-dark-state-example hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 focus:outline-none dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          className="themeButton flex items-center w-9 h-9 justify-center text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg toggle-dark-state-example hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-500 dark:bg-gray-800 focus:outline-hidden dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         >
           <svg
             id="moon"

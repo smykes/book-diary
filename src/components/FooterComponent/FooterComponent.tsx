@@ -1,7 +1,7 @@
 const FooterComponent = () => {
   return (
-    <footer className="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
-      <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+    <footer className="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
+      <div className="w-full mx-auto max-w-(--breakpoint-xl) p-4 md:flex md:items-center md:justify-between">
         <span className="dark:text-neutral-400 text-sm text-gray-500 sm:text-center">
           🖤 Made with spite by{" "}
           <a
