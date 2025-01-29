@@ -147,7 +147,7 @@ function App() {
         {/* Average Pages Per Day */}
         {/* Average Books Per Week */}
 
-        <div className="w-100 flex flex-col gap-2 md:flex-row">
+        <div className="flex flex-col gap-2 md:flex-row">
           {!currentData && <StatisticsSkeleton />}
           {currentData && pagesRead && (
             <StatisticsComponent
@@ -177,7 +177,7 @@ function App() {
 
         {/* Title Search */}
 
-        <div className="w-100 mt-4 flex flex-col">
+        <div className="w-full mt-4 flex flex-col">
           <TitleSearchComponent
             setTerm={setTerm}
             setCurrentPage={setCurrentPage}
@@ -185,7 +185,7 @@ function App() {
         </div>
 
         {/* New Months / Years / Ratings / Sorting */}
-        <div className="w-100 flex flex-col gap-2 md:flex-row mt-4 mb-2">
+        <div className="w-full flex flex-col gap-2 md:flex-row mt-4 mb-2">
           {/* Years */}
           <label
             htmlFor="optionYear"
@@ -195,7 +195,7 @@ function App() {
           </label>
           <select
             id="optionYear"
-            className="w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
+            className="px-4 rounded-md md:w-1/2 w-full shadow-sm h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800 bg-white"
             aria-label="Year Filter"
             onChange={(e) => {
               if (e.target.value === "-1") {
@@ -231,7 +231,7 @@ function App() {
                 setCurrentPage(0);
               }
             }}
-            className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
+            className="border-gray-300 w-full px-4 rounded-md md:w-1/2 shadow-sm h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800 bg-white"
           >
             <option value="-1">All Months</option>
             {optionMonths()}
@@ -247,7 +247,7 @@ function App() {
           </label>
           <select
             id="optionRating"
-            className=" border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
+            className=" border-gray-300 w-full px-4 rounded-md md:w-1/2 shadow-sm h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800 bg-white"
             aria-label="Rating Filter"
             onChange={(e) => {
               if (e.target.value === "-1") {
@@ -273,7 +273,7 @@ function App() {
             Sort By
           </label>
           <select
-            className="border-gray-300 w-100 px-4 rounded-md md:w-1/2 w-100 shadow h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800"
+            className="border-gray-300 w-full px-4 rounded-md md:w-1/2 shadow-sm h-10 text-slate-700 dark:text-gray-100 dark:bg-slate-800 bg-white"
             aria-label="Sort Order"
             onChange={(e) => {
               if (e.target.value === "0") {

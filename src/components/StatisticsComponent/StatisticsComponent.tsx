@@ -6,7 +6,7 @@ const StatisticsComponent = (props: StatsType) => {
   const { books, pages, phrase } = props;
 
   return (
-    <div className="w-100 flex flex-col rounded-lg bg-gray-100 shadow md:w-1/2">
+    <div className="w-full flex flex-col rounded-lg bg-gray-100 shadow-sm md:w-1/2">
       <div className="card-body p-0">
         <h2 className="w-full rounded-t-lg dark:bg-slate-900 bg-indigo-700 px-2 py-2 text-sm text-slate-50 text-left">
           {phrase}

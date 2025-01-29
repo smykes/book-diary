@@ -17,7 +17,7 @@ const TitleSearchComponent = (props: ITitleSearchComponent) => {
       </label>
       <input
         id="titleSearch"
-        className="rounded h-10 px-2 dark:bg-gray-800 dark:text-gray-100"
+        className="rounded-sm h-10 px-2 bg-white dark:bg-gray-800 dark:text-gray-100"
         type="text"
         onChange={(e) => {
           setTerm(e);
