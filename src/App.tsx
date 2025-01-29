@@ -68,9 +68,6 @@ function App() {
       setPagesRead(books.numberOfPages);
       setBooksRead(books.numberOfBooks);
       setPaginationCount(Math.ceil(books.numberOfPagination));
-      if (selectedYear !== undefined) {
-        console.log(getMonthsByYear(selectedYear));
-      }
     };
 
     getBooks();

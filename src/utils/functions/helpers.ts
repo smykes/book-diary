@@ -1,6 +1,7 @@
 import { BookType } from "../../types/index";
 import { MONTH_DATA, ENDPOINT } from "../../constants";
 
+// ✅
 const formatNumberWithCommas = (num: number | undefined) => {
   let formatted;
   if (num && num > 0) {
@@ -10,9 +11,14 @@ const formatNumberWithCommas = (num: number | undefined) => {
   }
   return formatted;
 };
+
+// ✅
 const formatDate = (dateRead: string | null): string => {
   if (dateRead) {
     const d = new Date(dateRead);
+    if (isNaN(d.getTime())) {
+      return "Invalid Date";
+    }
     return `${getMonthName(
       d.getMonth() + 1
     )} ${d.getDate()}, ${d.getFullYear()}`;
@@ -20,80 +26,88 @@ const formatDate = (dateRead: string | null): string => {
   return "No Date Recorded";
 };
 
-const getMonthYearLabel = (
-  modifier: string,
-  month: number | undefined,
-  year: number | undefined
-): string => {
-  // All years all months.
-
-  // Book Count {MM/YYYY}:
-  // Page Count {}:
-
-  // All Books since the beginning.
-  if (month === undefined && year === undefined) {
-    return "All Books all time.";
-  }
-  // A month all year specified
-  if (month === undefined && year !== undefined) return `Book Count ${year}`;
-
-  // A month year specified
-  if (month !== undefined && year === undefined)
-    return `${modifier} ${MONTH_DATA[month - 1].monthName} all years.`;
-
-  // If year and month are defined.
-  if (month !== undefined && year !== undefined)
-    return `1234 ${modifier} ${MONTH_DATA[month - 1].monthName}, ${year}.`;
-  return "Something went wrong.";
-};
-
+// ✅
 const getMonthName = (month: number | undefined) => {
-  if (month) return `${MONTH_DATA[month - 1].monthName}`;
+  if (month !== undefined) {
+    if (month > 0 && month <= 12) return `${MONTH_DATA[month - 1].monthName}`;
+    return "An error has occured, month must be a whole number between 1 and 12";
+  }
   return "All Months";
 };
 
+const getIsValidMonth = (month: number) => {
+  if (month > 0 && month <= 12) return true;
+  return false;
+};
+
+const getIsValidRating = (rating: number) => {
+  if (rating > 0 && rating <= 5) return true;
+  return false;
+};
+
+// ✅
 const getComponentPhraseForBooks = (
   year: number | undefined,
   month: number | undefined,
   rating: number | undefined
 ) => {
-  // All Time
+  // Nothing
   if (month === undefined && year === undefined && rating === undefined) {
     return "Books read all time";
   }
-  if (month === undefined && year === undefined && rating !== undefined) {
-    return `Books read all time with a rating of ${rating}`;
-  }
-  // Months
 
-  if (month !== undefined && year === undefined && rating === undefined) {
-    return `Books read in ${getMonthName(month)}es`;
-  }
-  if (month !== undefined && year === undefined && rating !== undefined) {
-    return `Books read in ${getMonthName(month)}es with a rating of ${rating}`;
-  }
-
-  // Years
+  // Only Year
   if (month === undefined && year !== undefined && rating === undefined) {
     return `Books read in ${year}`;
   }
+
+  // Only Month
+  if (month !== undefined && year === undefined && rating === undefined) {
+    if (getIsValidMonth(month)) {
+      return `Books read in the month of ${getMonthName(month)} all time`;
+    }
+  }
+
+  // Only Rating
+  if (month === undefined && year === undefined && rating !== undefined) {
+    if (getIsValidRating(rating))
+      return `Books read all time with a rating of ${rating}`;
+  }
+
+  // Year/Rating
   if (month === undefined && year !== undefined && rating !== undefined) {
-    return `Books read in ${year} with a rating of ${rating}`;
+    if (getIsValidRating(rating)) {
+      return `Books read in ${year} with a rating of ${rating}`;
+    }
   }
 
-  // Months and Years
+  // Month/Rating
+  if (month !== undefined && year === undefined && rating !== undefined) {
+    if (getIsValidMonth(month) && getIsValidRating(rating)) {
+      return `Books read in ${getMonthName(month)} with a rating of ${rating}`;
+    }
+  }
+
+  // Month/Year
   if (month !== undefined && year !== undefined && rating === undefined) {
-    return `Books read in ${getMonthName(month)} of ${year}`;
-  }
-  if (month !== undefined && year !== undefined && rating !== undefined) {
-    return `Books read in ${getMonthName(
-      month
-    )} of ${year} with a rating of ${rating}`;
+    if (getIsValidMonth(month)) {
+      return `Books read in ${getMonthName(month)} of ${year}`;
+    }
   }
 
-  return "An error occured.";
+  // Year/Month/Rating
+  if (month !== undefined && year !== undefined && rating !== undefined) {
+    if (getIsValidMonth(month) && getIsValidRating(rating)) {
+      return `Books read in ${getMonthName(
+        month
+      )} of ${year} with a rating of ${rating}`;
+    }
+  }
+
+  return "An error has occured.";
 };
 
+// ✅
 const getComponentPhraseForPages = (
   year: number | undefined,
   month: number | undefined,
@@ -103,39 +117,64 @@ const getComponentPhraseForPages = (
   if (month === undefined && year === undefined && rating === undefined) {
     return "Pages read all time";
   }
-  if (month === undefined && year === undefined && rating !== undefined) {
-    return `Pages read all time with a rating of ${rating}`;
-  }
-  // Months
-
-  if (month !== undefined && year === undefined && rating === undefined) {
-    return `Pages read in ${getMonthName(month)}es`;
-  }
-  if (month !== undefined && year === undefined && rating !== undefined) {
-    return `Pages read in ${getMonthName(month)}es with a rating of ${rating}`;
-  }
 
   // Years
   if (month === undefined && year !== undefined && rating === undefined) {
     return `Pages read in ${year}`;
   }
-  if (month === undefined && year !== undefined && rating !== undefined) {
-    return `Pages read in ${year} with a rating of ${rating}`;
+
+  // Months
+  if (month !== undefined && year === undefined && rating === undefined) {
+    if (getIsValidMonth(month)) {
+      return `Pages read in the month of ${getMonthName(month)} all time`;
+    }
   }
 
-  // Months and Years
+  // Rating
+  if (month === undefined && year === undefined && rating !== undefined) {
+    if (getIsValidRating(rating)) {
+      return `Pages read all time with a rating of ${rating}`;
+    }
+  }
+
+  // Year/Month
   if (month !== undefined && year !== undefined && rating === undefined) {
-    return `Pages read in ${getMonthName(month)} of ${year}`;
-  }
-  if (month !== undefined && year !== undefined && rating !== undefined) {
-    return `Pages read in ${getMonthName(
-      month
-    )} of ${year} with a rating of ${rating}`;
+    if (getIsValidMonth(month)) {
+      return `Pages read in ${getMonthName(month)} of ${year}`;
+    }
   }
 
-  return "An error occured.";
+  // Year/Rating
+
+  if (month === undefined && year !== undefined && rating !== undefined) {
+    if (getIsValidRating(rating)) {
+      return `Pages read in ${year} with a rating of ${rating}`;
+    }
+  }
+
+  // Month/Rating
+  if (month !== undefined && year === undefined && rating !== undefined) {
+    if (getIsValidMonth(month) && getIsValidRating(rating)) {
+      return `Pages read in the month of ${getMonthName(
+        month
+      )} with a rating of ${rating} all time`;
+    }
+  }
+
+  // Month/Year/Rating
+
+  if (month !== undefined && year !== undefined && rating !== undefined) {
+    if (getIsValidMonth(month) && getIsValidRating(rating)) {
+      return `Pages read in ${getMonthName(
+        month
+      )} of ${year} with a rating of ${rating}`;
+    }
+  }
+
+  return "An error has occured.";
 };
 
+// ✅
 const getURL = (
   month: number | undefined,
   year: number | undefined,
@@ -164,12 +203,12 @@ const getURL = (
   return `${baseUrl}${urlString}`;
 };
 
+// ✅
 const getMonthsByYear = (year: number) => {
   const cuurentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   let months = [];
   if (year === cuurentYear) {
-    console.log("hit");
     for (let i = 0; i < currentMonth + 1; i += 1) {
       months.push(MONTH_DATA[i]);
     }
@@ -178,12 +217,14 @@ const getMonthsByYear = (year: number) => {
 };
 
 export {
-  getMonthYearLabel,
-  getMonthName,
+  formatDate,
+  formatNumberWithCommas,
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
-  formatDate,
-  getURL,
-  formatNumberWithCommas,
+  getIsValidMonth,
+  getIsValidRating,
+  getMonthName,
   getMonthsByYear,
+  getURL,
 };
+//
