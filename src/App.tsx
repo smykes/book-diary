@@ -51,6 +51,22 @@ function App() {
   };
 
   useEffect(() => {
+    if (!window.localStorage.getItem("theme")) {
+      window.localStorage.setItem("theme", "dark");
+    } else {
+      if (window.localStorage.getItem("theme")) {
+        const theme = window.localStorage.getItem("theme");
+        const icon = theme === "dark" ? "sun" : "moon";
+        document
+          .getElementsByTagName("body")[0]
+          .classList.remove("dark", "light");
+        if (theme)
+          document.getElementsByTagName("body")[0].classList.add(theme);
+        document.getElementById("moon")?.classList.add("hidden");
+        document.getElementById("sun")?.classList.add("hidden");
+        document.getElementById(icon)?.classList.toggle("hidden");
+      }
+    }
     const getBooks = async () => {
       if (!activeYears) {
         const historicallyActiveYears = await getAllYears();
