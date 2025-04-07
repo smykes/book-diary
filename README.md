@@ -25,7 +25,7 @@ Either create your own script or find a site on the internet that allows you to 
 
 ### Where do I put my data
 
-Rename the file to `books.json` and stick it in `./src/data`. You can really name it whatever you want as long as you change the import in `./src/App.tsx`. You could of course put your data pretty easily in some non-relational database, but you would have to rewrite some of the logic.
+I use a Heroku Postgresql instance seeding it with the Prisma ORM tools.
 
 ## Deploying
 
