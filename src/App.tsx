@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import BookComponent from "./components/BookComponent/BookComponent";
 import NavigationComponent from "./components/NavigationComponent/NavigationComponent";
 import StatisticsComponent from "./components/StatisticsComponent/StatisticsComponent";
@@ -8,7 +8,6 @@ import {
   getComponentPhraseForBooks,
   getComponentPhraseForPages,
   getMonthsByYear,
-  getURL,
 } from "./utils/functions/helpers";
 
 import { getAllBooks, getAllYears } from "./utils/functions/async";
