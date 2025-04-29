@@ -12,6 +12,7 @@ const FooterComponent = () => {
           </a>{" "}
           in Chicago 🖤
         </span>
+
         <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
           <li>
             <a
@@ -20,6 +21,11 @@ const FooterComponent = () => {
             >
               About
             </a>
+          </li>
+          <li>
+            <span className="dark:text-neutral-400 text-sm text-gray-500 sm">
+              Data last uploaded 4.29.25
+            </span>
           </li>
         </ul>
       </div>
