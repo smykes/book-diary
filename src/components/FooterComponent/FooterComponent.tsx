@@ -24,7 +24,7 @@ const FooterComponent = () => {
           </li>
           <li>
             <span className="dark:text-neutral-400 text-sm text-gray-500 sm">
-              Data last uploaded 4.29.25
+              Data last uploaded 1.13.26
             </span>
           </li>
         </ul>
